@@ -4,7 +4,7 @@ const exphbs = require('express-handlebars');
 const session = require('express-session');
 const uuidv1 = require('uuid/v1');
 const data = require('./data/data');
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
