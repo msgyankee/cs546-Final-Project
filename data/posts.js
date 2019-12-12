@@ -76,6 +76,20 @@ module.exports = {
         if (!start || !start.isInteger()) return Promise.reject("Must enter a valid number to start at.");
         const postCollection = await posts();
         return postCollection.foo.find().sort({start:-1}).limit(10);
-        
+
+    },
+
+    async getRandom(){
+        const post_array = getAllPosts();
+        const num = (Math.random() * post_array.length) + 1;
+        return post_array[num].sessionID;
+    },
+
+    async getPostNum(){
+        post_array = getAllPosts();
+        return post_array.length;
+
+
+
     }
 }
