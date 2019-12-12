@@ -18,9 +18,14 @@ app.use(session({
     secret: 'very scret string!',
     resave: false,
     saveUninitialized: true
-  }))
+  }));
 
 //Middleware
+app.use('/create', function(request, response, next){
+  if(!request.session.loginStatus) response.status(403).render('pages/login');
+  else{next();}
+});
+
 
 //Routes
 configRoutes(app);

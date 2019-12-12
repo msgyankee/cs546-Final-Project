@@ -1,4 +1,5 @@
 const loginRoutes = require("./login");
+const createRoutes = require("./create");
 
 const data = require("../data");
 const postData = data.posts;
@@ -8,18 +9,20 @@ const contructorMethod = app => {
     //app.use for /pages
 
     app.use("/login", loginRoutes);    
+    app.use("/create", createRoutes);
     
     app.get("/", async (req, res) => {
-        arr = postData.getTen(0);
+        arr = await postData.getTen(0);
         res.render('pages/home', {title: Home, posts: arr});
     });
 
     app.get('/:id', async (req, res) => {
         if(!req.params.id) res.redirect('/');
         const pageNum = parseInt(req.params.id);
-        const postCount = postData.getPostNum();
+        const postCount = await postData.getPostNum();
+        if(pageNum < 0) res.redirect('/');
         if(pageNum >= Math.floor(postCount/10)) res.redirect(`/${Math.floor(postCount/10)}`);
-        arr = postData.getTen(pageNum*10)
+        arr = await postData.getTen(pageNum*10)
         res.render('pages/home', {title: 'Home', posts: arr})
     });
 

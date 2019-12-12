@@ -189,9 +189,7 @@ module.exports = {
 
         const userCollection = users();
 
-        const user = await userCollection.findOne({sessionID:sessionID});
-        if(user === false) return Promise.reject('Session Not Found');
-        
+        const user = await userCollection.findOne({sessionID:sessionID});        
         return user;
     },
      
