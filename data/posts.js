@@ -89,7 +89,17 @@ module.exports = {
         post_array = getAllPosts();
         return post_array.length;
 
+    },
 
-
+    async searchPost(keyword){
+        if (!keyword || typeof(keyword) === String) return Promise.reject("Must enter a valid keyword");
+        post_array = getAllPosts();
+        const arr = [];
+        for (var i = 0; i < post_array.length; i++){
+            if (post_array[i].postTitle.includes(keyword) || post_array[i].content.includes(keyword)){
+                arr.push(post_array[i]);
+            }
+        }
+        return arr;
     }
 }
