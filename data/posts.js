@@ -39,12 +39,8 @@ module.exports = {
         const postCollection = await posts();
 		const post_array = await postCollection.find({}).toArray();
 		post_array.forEach(function(post) {
-			const user = users.get(post.sessionID);
-			let author = {
-				id: post.author,
-				name: `${user.username}`
-			}
-			post.author = author;
+			const id = users.userBySession(post.sessionID);
+			post.sessionID = id;
 		});
 		return post_array;
     },
@@ -80,6 +76,6 @@ module.exports = {
         if (!start || !start.isInteger()) return Promise.reject("Must enter a valid number to start at.");
         const postCollection = await posts();
         return postCollection.foo.find().sort({start:-1}).limit(10);
-
+        
     }
 }
