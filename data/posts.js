@@ -76,6 +76,30 @@ module.exports = {
         if (!start || !start.isInteger()) return Promise.reject("Must enter a valid number to start at.");
         const postCollection = await posts();
         return postCollection.foo.find().sort({start:-1}).limit(10);
-        
+
+    },
+
+    async getRandom(){
+        const post_array = getAllPosts();
+        const num = (Math.random() * post_array.length) + 1;
+        return post_array[num].sessionID;
+    },
+
+    async getPostNum(){
+        post_array = getAllPosts();
+        return post_array.length;
+
+    },
+
+    async searchPost(keyword){
+        if (!keyword || typeof(keyword) === String) return Promise.reject("Must enter a valid keyword");
+        post_array = getAllPosts();
+        const arr = [];
+        for (var i = 0; i < post_array.length; i++){
+            if (post_array[i].postTitle.includes(keyword) || post_array[i].content.includes(keyword)){
+                arr.push(post_array[i]);
+            }
+        }
+        return arr;
     }
 }
