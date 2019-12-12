@@ -1,6 +1,8 @@
 const collections = require('./collections');
 const users = collections.users;
 var ObjectID = require('mongodb').ObjectID;
+const bcrypt = require("bcryptjs");
+
 
 
 module.exports = {
@@ -138,15 +140,16 @@ module.exports = {
         return id;
     },
 
-    async login(username, hashedPassword){
+    async login(username, password){
         if(!username || typeof username !== String) return Promise.reject('Must provide valid username');
-        if(!hashedPassword || typeof password !== String) return Promise.reject('Must provide a valid password');
+        if(!password || typeof password !== String) return Promise.reject('Must provide a valid password');
 
         const userCollection = users();
 
-        const user = await userCollection.findOne({ $and: [{username:username} , {hashedPassword:hashedPassword}]});
-        if(user = null) return Promise.reject('User not found');
-
+        const user = await userCollection.findOne({username:username});
+        if(user = null) return null;
+        const compare = await bcrypt.compare(password, user.hashedPassword);
+        if(compare = false) return null;
         return user._id;
     },
 

@@ -1,7 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const bcryptjs = require("bcryptjs");
-const users = require("../data/users")
+const user = require("../data/users");
+const uuidv1 = require('uuid/v1');
+
+
 
 router.get("/", (req,res) => {
     try{
@@ -19,29 +21,19 @@ router.get("/", (req,res) => {
 });
 router.post("/", async (req,res) => {
     if(!req.body.username || !req.body.password){
-        res.status(401).render("pages/login",{title:"Login",error:true});
-        return;
+        res.status(401).render("pages/login",{title:"Login", reqFields:true});
     }    
-    try{
-        if(!users.userCollection[req.body.username]){
-            res.status(401).render("pages/login",{title:"Login",error:true});
-            return;
-        }
-        inputUser = users.userCollection[req.body.username];
-        let samePassword = await bcryptjs.compare(req.body.password,inputUser["password"]);
-        if(samePassword){
-                req.session.loginStatus = true; 
-                inputUser["validSessionAccessors"].push(req.session.id);
-                res.redirect(`/user/${user._id}`);
-        }
-        else{
-            res.status(401).render("pages/login",{title:"Login",error:true});
-            return;
-        }
-    }
-    catch(e){
-        res.sendStatus(500);
+    else try{
+        const userID = user.login(req.body.username, req.body.password);
+        if(userID === null) res.render("pages/login", {title:"Login", badLogin: true});
+
+        const uuid = uuidv1();
+        request.session.loginStatus = uuid;
+        await userData.setSession(userID, uuid);
+        res.redirect(`/user/${userID}`);
+    }catch(e){
+        res.status(500).json({error: e});
     }
 });
 
-module.exports = router
+module.exports = router;

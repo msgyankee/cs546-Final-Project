@@ -5,10 +5,14 @@ const userData = data.users;
 const postData = data.posts;
 
 router.get('/', async (req,res) => {
-    const user = await userData.userBySession(req.session.loginStatus);
-    if(user = null) res.redirect('/login'); //User has cookie data, but session not found in database
+    try{
+        const user = await userData.userBySession(req.session.loginStatus);
+        if(user = null) res.redirect('/login'); //User has cookie data, but session not found in database
 
-    res.render('pages/create', {title: "Create Post"});
+        res.render('pages/create', {title: "Create Post"});
+    } catch(e){
+        res.status(500).json({error: e});
+    }
 });
 
 router.post('/', async (req,res) => {
@@ -17,7 +21,7 @@ router.post('/', async (req,res) => {
         const postID = postData.create(req.session.loginStatus, req.body.type, req.body.postTitle, req.body.movieTitle, req.body.genre, req.body.content);
         res.redirect(`/posts/${postID}`);
     } catch(e) {
-        req.render('/create', {title: "Create Post", errorMessage: e});
+        res.status(500).json({error: e});
     }
 });
 

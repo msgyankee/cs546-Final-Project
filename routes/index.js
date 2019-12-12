@@ -7,8 +7,6 @@ const data = require("../data");
 const postData = data.posts;
 
 const contructorMethod = app => {
-    //Set routes for homepage or send to own file?
-    //app.use for /pages
 
     app.use("/login", loginRoutes);    
     app.use("/create", createRoutes);
@@ -16,18 +14,28 @@ const contructorMethod = app => {
     app.use("/user", userRoutes);
     
     app.get("/", async (req, res) => {
-        arr = await postData.getTen(0);
-        res.render('pages/home', {title: Home, posts: arr});
+        try{
+            arr = await postData.getTen(0);
+            res.render('pages/home', {title: Home, posts: arr});
+        }catch(e){
+            res.status(500).json({error: e});
+        }  
     });
 
     app.get('/:id', async (req, res) => {
         if(!req.params.id) res.redirect('/');
-        const pageNum = parseInt(req.params.id);
-        const postCount = await postData.getPostNum();
-        if(pageNum < 0) res.redirect('/');
-        if(pageNum >= Math.floor(postCount/10)) res.redirect(`/${Math.floor(postCount/10)}`);
-        arr = await postData.getTen(pageNum*10)
-        res.render('pages/home', {title: 'Home', posts: arr})
+        else try{
+            const pageNum = parseInt(req.params.id);
+            const postCount = await postData.getPostNum();
+            if(pageNum < 0) res.redirect('/');
+            else if(pageNum >= Math.floor(postCount/10)) res.redirect(`/${Math.floor(postCount/10)}`);
+            else{
+                arr = await postData.getTen(pageNum*10);
+                res.render('pages/home', {title: 'Home', posts: arr})
+            }
+        } catch(e){
+            res.status(500).json({error: e});
+        }
     });
 
     //All undefined pages get sent 404. Make error page?
