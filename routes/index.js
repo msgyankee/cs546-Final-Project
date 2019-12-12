@@ -1,5 +1,7 @@
 const loginRoutes = require("./login");
 const createRoutes = require("./create");
+const signupRoutes = require("./signup");
+const userRoutes = require("./user");
 
 const data = require("../data");
 const postData = data.posts;
@@ -10,6 +12,8 @@ const contructorMethod = app => {
 
     app.use("/login", loginRoutes);    
     app.use("/create", createRoutes);
+    app.use("/signup", signupRoutes);
+    app.use("/user", userRoutes);
     
     app.get("/", async (req, res) => {
         arr = await postData.getTen(0);
