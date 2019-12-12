@@ -30,6 +30,13 @@ const contructorMethod = app => {
     app.get("*", (req,res) => {
         res.sendStatus(404); 
     });
+    app.get('/logout', async function (request, response){
+        const anHourAgo = new Date();
+        anHourAgo.setHours(anHourAgo.getHours() - 1);
+        response.cookie("AuthCookie", "", { expires: anHourAgo });
+        response.clearCookie('AuthCookie');
+        response.render('pages/logout',{});
+    });
 }
 
 module.exports = constructorMethod;
