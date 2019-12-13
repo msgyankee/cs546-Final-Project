@@ -9,7 +9,7 @@ router.get('/', async (req,res) => {
    try{
         if(req.session.loginStatus){
             const user = userData.userBySession(req.session.loginStatus);
-            if(user !== null) res.redirect(`pages/user/${user._id}`);
+            if(user !== null) res.redirect(`/user/${user._id}`);
         } 
 
         res.render('pages/signup', {title: "Signup"});

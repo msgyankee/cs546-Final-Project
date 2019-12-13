@@ -5,14 +5,17 @@ const userRoutes = require("./user");
 
 const data = require("../data");
 const postData = data.posts;
+const userData = data.users;
 
 const contructorMethod = app => {
 
+    //Pages w/ multiple routes go into separate files.
     app.use("/login", loginRoutes);    
     app.use("/create", createRoutes);
     app.use("/signup", signupRoutes);
     app.use("/user", userRoutes);
     
+    //Homepage routes
     app.get("/", async (req, res) => {
         try{
             arr = await postData.getTen(0);
@@ -35,6 +38,51 @@ const contructorMethod = app => {
             }
         } catch(e){
             res.status(500).json({error: e});
+        }
+    });
+
+    //These routes are singletons, so they were added here in index
+    app.get('/post/:id', async (req, res) => {
+        if(!req.params.id) res.redirect('/');
+        else try{
+            const postID =parseInt(req.params.id)
+            const login = true;
+            const status = false;
+            if(!req.session.loginStatus) login = false;
+            else try{
+                const user = userData.userBySession(req.session.loginStatus);
+                if(user !== null){
+                    status = userData.isFavorite(user._id, postID);
+                }
+            } catch(e){
+                status = false;
+            }
+
+            const post = postData.getPost(postID);
+
+
+            res.render('pages/post', {title: post.postTitle, post: post, login: login, favorite: status});
+        } catch(e){
+            res.status(500).json({error: e});   
+        }
+    });
+
+    app.post('/search/:query', (req,res) => {
+        if(!req.body.query) res.redirect('/');
+        try{
+            const arr = postData.searchPost(req.body.query);
+            res.render("pages/search", {title: "Search Results", posts: arr});
+        } catch(e){
+            res.status(500).json({error: e});
+        }
+    });
+
+    app.get('/random', (req,res) => {
+        try{
+            const post = postData.getRandom();
+            res.redirect(`/post/${post}`);
+        } catch(e){
+            res.status(500).json({error: e}); 
         }
     });
 
