@@ -1,11 +1,11 @@
 <form id="signup-form" method="POST" action="/signup">
     <label for="username">Username:</label>
-    <input type="text" name="username" id="username">
+    <input type="text" name="username" id="username" required>
     <label for="password">Password:</label>
-    <input type="password" name="password" id="password">
+    <input type="password" name="password" id="password" required>
     <button type="Submit" value="Submit">Submit</button>
     {{#if badLogin}}
-        <p class="error">Username or password was incorrect!</p>
+        <p class="error">Username is already in use!</p>
     {{/if}}
     {{#if reqFields}}
         <p class="error">Please fill out all fields!</p>
