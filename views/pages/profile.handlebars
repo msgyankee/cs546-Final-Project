@@ -1,8 +1,11 @@
 <div class = "profile_style">
 <h1>User Posts:</h1>
+
+{{#if noPost}}
+    <p>No Posts Yet! <a href="/create">Create one now!</a></p>
+{{/if}}
 {{#each posts}}
-    <h1>{{postTitle}}</h1>
-    <h2>{{author}}</h2>
+    <a href="/post/{{_id}}"><h1>{{postTitle}}</h1></a>    
     <h3>{{movieTitle}}</h3>
     <h4>{{genre}}</h4>
     {{#if_eq type 0}}
@@ -19,9 +22,13 @@
 {{/each}}
 
 <h1>User Favorites:</h1>
+{{#if noFav}}
+    <p>No Favorites Yet!</p>
+{{/if}}
 
-{{#each Favorites}}
-    <h1>{{postTitle}}</h1>
+
+{{#each favorites}}
+    <a href="/post/{{_id}}"><h1>{{postTitle}}</h1></a>    
     <h2>{{author}}</h2>
     <h3>{{movieTitle}}</h3>
     <h4>{{genre}}</h4>

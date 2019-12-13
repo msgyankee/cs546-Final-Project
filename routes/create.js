@@ -9,7 +9,7 @@ router.get('/', async (req,res) => {
         const user = await userData.userBySession(req.session.loginStatus);
         if(user == null) res.redirect('/login'); //User has cookie data, but session not found in database
 
-        res.render('pages/create', {title: "Create Post"});
+        res.render('pages/create', {title: "Create Post", login: true, userID: user._id});
     } catch(e){
         res.status(500).json({error: e});
     }
@@ -23,7 +23,7 @@ router.post('/', async (req,res) => {
        
         const userID = user._id;
         await userData.addPost(userID, postID);
-        res.redirect(`/posts/${postID}`);
+        res.redirect(`/post/${postID}`);
     } catch(e) {
         res.status(500).json({error: e});
     }

@@ -12,7 +12,13 @@ app.use(express.urlencoded({extended: true}));
 
 let hbs = exphbs.create({
   helpers: {
-    'if_eq': function(a,b) { if(a === b) return true; else{ return false; }}
+    'if_eq': function(a, b, opts) {
+      if (a == b) {
+          return opts.fn(this);
+      } else {
+          return opts.inverse(this);
+      }
+    }
   },
   defaultLayout: 'main'
 });
