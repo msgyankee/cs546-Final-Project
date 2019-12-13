@@ -1,6 +1,9 @@
+{{#if noneFound}}
+    <p>No posts matching your criteria...</p>
+{{#/if}}
+
 {{#each posts}}
-    <h1>{{postTitle}}</h1>
-    <h2>{{author}}</h2>
+    <a href="/post/{{_id}}"><h1>{{postTitle}}</h1></a>    
     <h3>{{movieTitle}}</h3>
     <h4>{{genre}}</h4>
     {{#if_eq type 0}}

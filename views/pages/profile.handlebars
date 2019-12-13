@@ -1,11 +1,10 @@
 <h1>User Posts:</h1>
 
 {{#if noPost}}
-    <p>No Posts Yet! <a href="localhost/3000/create">Create one now!</a></p>
+    <p>No Posts Yet! <a href="/create">Create one now!</a></p>
 {{/if}}
 {{#each posts}}
-    <h1>{{postTitle}}</h1>
-    <h2>{{author}}</h2>
+    <a href="/post/{{_id}}"><h1>{{postTitle}}</h1></a>    
     <h3>{{movieTitle}}</h3>
     <h4>{{genre}}</h4>
     {{#if_eq type 0}}
@@ -28,7 +27,7 @@
 
 
 {{#each favorites}}
-    <h1>{{postTitle}}</h1>
+    <a href="/post/{{_id}}"><h1>{{postTitle}}</h1></a>    
     <h2>{{author}}</h2>
     <h3>{{movieTitle}}</h3>
     <h4>{{genre}}</h4>

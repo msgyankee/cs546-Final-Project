@@ -2,6 +2,20 @@
     <h2>{{post.author}}</h2>
     <h3>{{post.movieTitle}}</h3>
     <h4>{{post.genre}}</h4>
+
+    {{#if login}}
+        {{#unless favorite}}
+        <form id=fav-button method=POST action="/user/favorite/{{post._id}}">
+            <button type="Submit">Add Favorite</button> 
+        </form>
+        {{/unless}}
+        {{#if favorite}}
+        <form id=fav-button method=POST action="/user/favorite/{{post._id}}">
+            <button type="Submit">Remove Favorite</button> 
+        </form>
+        {{/if}}
+    {{/if}}
+            
     {{#if_eq post.type 0}}
         <p>{{post.content}}</p>
     {{/if_eq}}

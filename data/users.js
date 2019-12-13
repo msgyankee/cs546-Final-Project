@@ -102,22 +102,28 @@ module.exports = {
     },
 
     async addFavorite(userID, postID){
+        console.log("Arrived in AddFav");
         if(!userID) return Promise.reject('Must provide a user ID to add favorite');
         if(!postID) return Promise.reject('Must provide post ID to add favorite');
-        
+        console.log("Passed arg check");
         const id = new ObjectID(userID);
         const userCollection = await users();
 
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');
-        
+        console.log("User found: "+user);
+        let arr = user.favorites;
+        arr.push(postID);
+            
         const updatedUser = {
             username: user.username,
             hashedPassword: user.hashedPassword,
             sessionID: user.sessionID,
             posts: user.posts,
-            favorites: user.favorites.push(postID)
+            favorites: arr
         };
+
+        console.log("Add Favorite Result: "+updatedUser.favorites);
 
         const updatedInfo = await userCollection.updateOne({_id: id}, {$set: updatedUser});
         if(updatedInfo.modifiedCount === 0) return Promise.reject('Could not update user favorites successfully');
@@ -134,12 +140,15 @@ module.exports = {
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');
         
+        let arr = user.favorites;
+        arr.splice(arr.indexOf(postID), 1);
+
         const updatedUser = {
             username: user.username,
             hashedPassword: user.hashedPassword,
             sessionID: user.sessionID,
             posts: user.posts,
-            favorites: user.favorites.splice(user.favorites.indexOf(postID), 1)
+            favorites: arr
         };
 
         const updatedInfo = await userCollection.updateOne({_id: id}, {$set: updatedUser});

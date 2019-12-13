@@ -18,8 +18,21 @@ const constructorMethod = app => {
     //Homepage routes
     app.get("/", async (req, res) => {
         try{
+            let login = true;
+            let userID = "";
+            if(!req.session.loginStatus) login = false;
+            else try{
+                const user = await userData.userBySession(req.session.loginStatus);
+                if(user !== null){
+                    userID = user._id;
+                }
+            } catch(e){
+                login = false
+                userID = false;
+            }
             let arr = await postData.getTen(0);
-            res.render('pages/home', {title: "Home", posts: arr});
+            if(login)res.render('pages/home', {title: "Home", login: true, userID: userID, posts: arr});
+            else{ res.render('pages/home', {title: "Home", posts: arr}); }
         }catch(e){
             res.status(500).json({error: e});
         }  
@@ -31,26 +44,24 @@ const constructorMethod = app => {
         if(!req.params.id) res.redirect('/');
         else try{
             const postID = req.params.id;
+            
             let login = true;
             let status = false;
-            console.log("Post ID: "+postID);
+            let userID = "";
             if(!req.session.loginStatus) login = false;
             else try{
-                console.log("in the try");
                 const user = await userData.userBySession(req.session.loginStatus);
                 if(user !== null){
                     status = await userData.isFavorite(user._id, postID);
+                    userID = user._id;
                 }
             } catch(e){
                 status = false;
             }
-            console.log("Status check complete...");
-            console.log("Logged in: "+login);
-            console.log("Favorited: "+status);
+            console.log("Testing Post/id.... login:"+login);
             const post = await postData.getPost(postID);
-            console.log("Post retreived: "+post);
-
-            res.render('pages/post', {title: post.postTitle, post: post, login: login, favorite: status});
+            console.log(post)
+            res.render('pages/post', {title: post.postTitle, post: post, login: login, userID: userID, favorite: status});
         } catch(e){
             res.status(500).json({error: e});   
         }
@@ -59,8 +70,23 @@ const constructorMethod = app => {
     app.post('/search/:query', async (req,res) => {
         if(!req.body.query) res.redirect('/');
         try{
+
+            let login = true;
+            let userID = "";
+            if(!req.session.loginStatus) login = false;
+            else try{
+                const user = await userData.userBySession(req.session.loginStatus);
+                if(user !== null){
+                    userID = user._id;
+                }
+            } catch(e){
+                login = false
+                userID = false;
+            }            
+
             const arr = await postData.searchPost(req.body.query);
-            res.render("pages/search", {title: "Search Results", posts: arr});
+            if(arr.length == 0) res.render("pages/search", {title: "Search Results", login: login, userID: userID, noneFound: true});
+            else{ res.render("pages/search", {title: "Search Results", login:login, userID: userID, posts: arr}); }
         } catch(e){
             res.status(500).json({error: e});
         }
@@ -85,16 +111,31 @@ const constructorMethod = app => {
         res.redirect('/');
     });
 
+    //Dynamic route can overwrite others, so its at the bottom 
     app.get('/:id', async (req, res) => {
         if(!req.params.id) res.redirect('/');
         else try{
+            
+            let login = true;
+            let userID = "";
+            if(!req.session.loginStatus) login = false;
+            else try{
+                const user = await userData.userBySession(req.session.loginStatus);
+                if(user !== null){
+                    userID = user._id;
+                }
+            } catch(e){
+                login = false
+                userID = false;
+            }
+            
             const pageNum = parseInt(req.params.id);
             const postCount = await postData.getPostNum();
             if(pageNum < 0) res.redirect('/');
             else if(pageNum >= Math.floor(postCount/10)) res.redirect(`/${Math.floor(postCount/10)}`);
             else{
                 arr = await postData.getTen(pageNum*10);
-                res.render('pages/home', {title: 'Home', posts: arr})
+                res.render('pages/home', {title: 'Home', login: login, userID: userID, posts: arr})
             }
         } catch(e){
             res.status(500).json({error: e});
@@ -107,3 +148,19 @@ const constructorMethod = app => {
     });
 }
 module.exports = constructorMethod;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
