@@ -35,8 +35,7 @@ const contructorMethod = app => {
         anHourAgo.setHours(anHourAgo.getHours() - 1);
         response.cookie("AuthCookie", "", { expires: anHourAgo });
         response.clearCookie('AuthCookie');
-        response.render('pages/logout',{});
+        res.redirect('/');
     });
 }
-
 module.exports = constructorMethod;
