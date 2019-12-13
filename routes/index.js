@@ -87,11 +87,8 @@ const constructorMethod = app => {
         }
     });
 
-    //All undefined pages get sent 404. Make error page?
-    app.get("*", (req,res) => {
-        res.sendStatus(404); 
-    });
-    app.get('/logout', (request, response) => {
+    
+    app.get("/logout", async (request, response) => {
         console.log("In logout");
         const sID = request.session.loginStatus;
         await userData.setSession(await userData.userBySession(sID), "");
@@ -101,6 +98,11 @@ const constructorMethod = app => {
         response.clearCookie('AuthCookie');
         console.log("Ready to redirect...");
         response.redirect('/');
+    });
+
+    //All undefined pages get sent 404. Make error page?
+    app.get("*", (req,res) => {
+        res.sendStatus(404); 
     });
 }
 module.exports = constructorMethod;

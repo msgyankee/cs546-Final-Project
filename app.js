@@ -17,7 +17,7 @@ app.use(session({
     secret: 'very scret string!',
     resave: false,
     saveUninitialized: true
-  }));
+  }))
 
 //Middleware
 app.use('/create', function(request, response, next){

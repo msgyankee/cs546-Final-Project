@@ -5,11 +5,12 @@ const uuidv1 = require('uuid/v1');
 
 
 
-router.get("/", (req,res) => {
+router.get("/", async (req,res) => {
     try{
+
         if(req.session.loginStatus){
-            const user = users.userBySession(req.session.loginStatus);
-            res.redirect(`/user/${user._id}`);
+            const users = await user.userBySession(req.session.loginStatus);
+            res.redirect(`/user/${users._id}`);
         }
         else {
             res.render("pages/login",{title:"Login"});
@@ -25,15 +26,11 @@ router.post("/", async (req,res) => {
     }    
     else try{
         const userID = await user.login(req.body.username, req.body.password);
-        console.log(userID);
-        console.log("here");
         if(userID === null) res.render("pages/login", {title:"Login", badLogin: true});
         else{
             const uuid = uuidv1();
-            console.log("uuid: "+uuid);
-            request.session.loginStatus = uuid;
-            console.log("uuid set");
-            await userData.setSession(userID, uuid);
+            req.session.loginStatus = uuid;
+            await user.setSession(userID, uuid);
             res.redirect(`/user/${userID}`);
         }
     }catch(e){

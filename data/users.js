@@ -144,15 +144,9 @@ module.exports = {
         if(!password || typeof password !== 'string') return Promise.reject('Must provide a valid password');
 
         const userCollection = await users();
-        console.log("username: "+usernameInput);
-        const test = await userCollection.findOne({});
-        console.log(test);
         const user = await userCollection.findOne({username: usernameInput});
-        console.log(user);
         if(user == null) return null;
         const compare = await bcrypt.compare(password, user.hashedPassword);
-        console.log(compare);
-        console.log(password);
         if(compare == false) return null;
         return user._id;
     },
@@ -198,11 +192,8 @@ module.exports = {
         if(!username || typeof username !== 'string') return Promise.reject('Must provide valid username');
         
         const userCollection = await users(); 
-        console.log("In userExists...");
         const user = await userCollection.findOne({username:username});
-        console.log("user: "+user);
         if(user == null) return false;
-        console.log("nah");
         return true;
     },
 
