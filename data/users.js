@@ -1,4 +1,5 @@
 const collections = require('./collections');
+const postData = require('./posts');
 const users = collections.users;
 var ObjectID = require('mongodb').ObjectID;
 const bcrypt = require("bcryptjs");
@@ -162,7 +163,9 @@ module.exports = {
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');
         
-        return user.posts;
+        const arr = user.posts.map( postID => postData.getPost(postID));
+
+        return arr;
     },
 
     async getUserFavorites(userID){
@@ -173,8 +176,10 @@ module.exports = {
 
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');
-        
-        return user.favorites;
+
+        const arr = user.posts.map( postID => postData.getPost(postID));
+
+        return arr;
     },
 
     async userExists(username){

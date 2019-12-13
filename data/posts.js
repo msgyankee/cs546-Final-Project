@@ -11,9 +11,13 @@ module.exports = {
         if (!genre || typeof genre !== String) return Promise.reject("Must provide a valid genre");
         if (!content || typeof content !== String) return Promise.reject("Must provide valid content");
 
+        const user = users.userBySession(sessionID);
+        if(user = null) return Promise.reject("User not found!");
+
         const postCollection = await posts();
         let newPost = {
-            sessionID: sessionID,
+            author: user.username,
+            authorID: user._id,
             type: type,
             postTitle: postTitle,
             movieTitle: movieTitle,
@@ -38,10 +42,6 @@ module.exports = {
     async getAllPosts(){
         const postCollection = await posts();
 		const post_array = await postCollection.find({}).toArray();
-		post_array.forEach(function(post) {
-			const id = users.userBySession(post.sessionID);
-			post.sessionID = id;
-		});
 		return post_array;
     },
 
@@ -81,8 +81,8 @@ module.exports = {
 
     async getRandom(){
         const post_array = getAllPosts();
-        const num = (Math.random() * post_array.length) + 1;
-        return post_array[num].sessionID;
+        const num = Math.floor(Math.random() * post_array.length);
+        return post_array[num]._id;
     },
 
     async getPostNum(){
