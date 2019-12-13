@@ -4,15 +4,19 @@ const posts = collections.posts;
 
 module.exports = {
     async create(sessionID, type, postTitle, movieTitle, genre, content){
-        if (!sessionID || typeof sessionID !== 'string') return Promise.reject('Must provide a valid ID');
+        
+        console.log(sessionID);
+        console.log(type);
+        console.log(postTitle);if (!sessionID || typeof sessionID !== 'string') return Promise.reject('Must provide a valid session');
         if (!type && parseInt(type) !== 0) return Promise.reject("Must provide a valid type");
         if (!postTitle || typeof postTitle !== 'string') return Promise.reject("Must provide a valid post title");
         if (!movieTitle || typeof movieTitle !== 'string') return Promise.reject("Must provide a valid movie title");
         if (!genre || typeof genre !== 'string') return Promise.reject("Must provide a valid genre");
         if (!content || typeof content !== 'string') return Promise.reject("Must provide valid content");
-
-        const user = users.userBySession(sessionID);
-        if(user = null) return Promise.reject("User not found!");
+        console.log("here");
+        const user = await users.userBySession(sessionID);
+        console.log(user);
+        if(user == null) return Promise.reject("User not found!");
         else{
             //Type: 0 for Text, 1 for Image, 2 for Video
             const typeInt = parseInt(type);

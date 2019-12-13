@@ -26,21 +26,6 @@ const constructorMethod = app => {
         }  
     });
 
-    app.get('/:id', async (req, res) => {
-        if(!req.params.id) res.redirect('/');
-        else try{
-            const pageNum = parseInt(req.params.id);
-            const postCount = await postData.getPostNum();
-            if(pageNum < 0) res.redirect('/');
-            else if(pageNum >= Math.floor(postCount/10)) res.redirect(`/${Math.floor(postCount/10)}`);
-            else{
-                arr = await postData.getTen(pageNum*10);
-                res.render('pages/home', {title: 'Home', posts: arr})
-            }
-        } catch(e){
-            res.status(500).json({error: e});
-        }
-    });
 
     //These routes are singletons, so they were added here in index
     app.get('/post/:id', async (req, res) => {
@@ -88,16 +73,32 @@ const constructorMethod = app => {
     });
 
     
-    app.get("/logout", async (request, response) => {
+    app.get("/logout", async (req, res) => {
         console.log("In logout");
-        const sID = request.session.loginStatus;
-        await userData.setSession(await userData.userBySession(sID), "");
+        console.log(req.session.loginStatus);
+        await userData.setSession((await userData.userBySession(req.session.loginStatus))._id, "");
         const anHourAgo = new Date();
         anHourAgo.setHours(anHourAgo.getHours() - 1);
-        response.cookie("AuthCookie", "", { expires: anHourAgo });
-        response.clearCookie('AuthCookie');
+        res.cookie("AuthCookie", "", { expires: anHourAgo });
+        res.clearCookie('AuthCookie');
         console.log("Ready to redirect...");
-        response.redirect('/');
+        res.redirect('/');
+    });
+
+    app.get('/:id', async (req, res) => {
+        if(!req.params.id) res.redirect('/');
+        else try{
+            const pageNum = parseInt(req.params.id);
+            const postCount = await postData.getPostNum();
+            if(pageNum < 0) res.redirect('/');
+            else if(pageNum >= Math.floor(postCount/10)) res.redirect(`/${Math.floor(postCount/10)}`);
+            else{
+                arr = await postData.getTen(pageNum*10);
+                res.render('pages/home', {title: 'Home', posts: arr})
+            }
+        } catch(e){
+            res.status(500).json({error: e});
+        }
     });
 
     //All undefined pages get sent 404. Make error page?

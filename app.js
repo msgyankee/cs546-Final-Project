@@ -21,7 +21,7 @@ app.use(session({
 
 //Middleware
 app.use('/create', function(request, response, next){
-  if(!request.session.loginStatus) response.status(403).render('pages/login');
+  if(!request.session.loginStatus) response.status(403).redirect('/login');
   else{next();}
 });
 

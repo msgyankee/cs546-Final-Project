@@ -39,17 +39,21 @@ module.exports = {
     async getUser(userID){
         if(!userID) return Promise.reject('ID is required for get');
 
+        try{
         const id = new ObjectID(userID);
+        } catch(e){
+            return null;
+        }
         const userCollection = await users();
 
         const user = await userCollection.findOne({_id: id});
-        if(user === null) return Promise.reject('User not found');
+        if(user === null) return null;
         return user;
     },
 
     async setSession(userID, sessionID){
         if(!userID) return Promise.reject('Must provide a user ID to set session');
-        if(!sessionID) return Promise.reject('Must provide Session ID to set Session ID');
+        if(!sessionID && sessionID !== "") return Promise.reject('Must provide Session ID to set Session ID');
         
         const id = new ObjectID(userID);
         const userCollection = await users();
@@ -198,11 +202,13 @@ module.exports = {
     },
 
     async userBySession(sessionID){
+        console.log("user by session")
+        console.log(sessionID);
         if(!sessionID) return Promise.reject('Must provide sessionID to search');
-
         const userCollection = await users();
 
         const user = await userCollection.findOne({sessionID:sessionID});        
+        console.log(user);
         return user;
     },
      
