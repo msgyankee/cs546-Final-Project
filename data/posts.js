@@ -33,9 +33,9 @@ module.exports = {
 
     async getPost(id){
         if (!id) return Promise.reject('ID is required for get');
-        const id = new ObjectID(id);
+        const newid = new ObjectID(id);
         const postCollection = posts();
-        const post = await postCollection.findOne({_id: id});
+        const post = await postCollection.findOne({_id: newid});
         if (post === null) return Promise.reject('Post not found');
         return post;
     },
