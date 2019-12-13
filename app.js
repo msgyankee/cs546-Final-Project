@@ -25,7 +25,8 @@ app.use(session({
     name: 'AuthCookie',
     secret: 'very scret string!',
     resave: false,
-    saveUninitialized: true
+    saveUninitialized: true,
+    httpOnly: false
   }))
 
 //Middleware
