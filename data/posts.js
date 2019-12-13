@@ -14,6 +14,7 @@ module.exports = {
         const user = users.userBySession(sessionID);
         if(user = null) return Promise.reject("User not found!");
 
+        //Type: 0 for Text, 1 for Image, 2 for Video
         const postCollection = await posts();
         let newPost = {
             author: user.username,

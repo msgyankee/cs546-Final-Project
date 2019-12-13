@@ -1,17 +1,17 @@
 <form id="create-form" method="POST" action="/create">
     <label for="postTitle">Title:</label>
-    <input type="text" name="postTitle" id="postTitle">
+    <input type="text" name="postTitle" id="postTitle" required>
     <label for="movieTitle">Movie Title:</label>
-    <input type="text" name="movieTitle" id="movieTitle">
+    <input type="text" name="movieTitle" id="movieTitle" required>
     <select name ="type">
         <option value="0">Text</option>   
         <option value="1">Image</option>  
         <option value="2">Video</option>  
     </select>
     <label for="genre">Genre:</label> 
-    <input type="text" name="genre" id="genre">
+    <input type="text" name="genre" id="genre" required>
     <label for="content">Content:</label> 
-    <input type="text" name="content" id="content">
+    <input type="text" name="content" id="content" required>
     <button type="Submit" value="Submit">Submit</button>
     {{#if reqFields}}
         <p class="error">Please fill out all fields!</p>

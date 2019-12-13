@@ -9,8 +9,9 @@ router.get("/:id", async(req, res) => {
         const data = userData.userBySession(req.session.loginStatus);
         if (data == null) res.redirect("/");
         else {
-            arr = data.userData.getUserPosts;
-            res.render('pages/profile', {title: 'Profile', posts: arr});
+            arr = userData.getUserPosts(data._id);
+            fav = userData.getUserFavorites(data._id);
+            res.render('pages/profile', {title: 'Profile', posts: arr, favorites: fav});
         }
 
     } catch(e){

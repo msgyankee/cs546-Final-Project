@@ -20,7 +20,7 @@ router.get('/', async (req,res) => {
 
 router.post('/', async (req,res) => {
     try{
-        if(!req.body.username || !req.body.password) res.render("pages/signup", {title: "Signup", reqForms});
+        if(!req.body.username || !req.body.password) res.render("pages/signup", {title: "Signup", reqFields: true});
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         userID = await userData.create(req.body.username, hashedPassword);
 
@@ -29,7 +29,7 @@ router.post('/', async (req,res) => {
         await userData.setSession(userID, uuid);
         res.redirect(`/user/${userID}`);
     } catch(e){
-        res.status(500).json({error: e});
+        res.render("pages/signup", {title: "Signup", badLogin: true});
     }
 });
 
