@@ -79,9 +79,10 @@ module.exports = {
         if (!start && parseInt(start) !== 0) {return Promise.reject("Must enter a valid number to start at.");}
         const index = parseInt(start);
         const postCollection = await posts();
-        arr = await postCollection.find().sort({_id:-1}).limit(10 + index).toArray();
-        if(arr == []) return null; 
-        return arr.splice(0, index);
+        let arr = await postCollection.find().sort({_id:-1}).limit(10 + index).toArray();
+        if(arr.length == 0) return null; 
+        if(index !== 0) return arr.splice(0, index);
+        return arr;
     },
 
     async getRandom(){
@@ -91,14 +92,14 @@ module.exports = {
     },
 
     async getPostNum(){
-        post_array = getAllPosts();
+        let post_array = getAllPosts();
         return post_array.length;
 
     },
 
     async searchPost(keyword){
         if (!keyword || typeof(keyword) !== 'string') return Promise.reject("Must enter a valid keyword");
-        post_array = getAllPosts();
+        let post_array = getAllPosts();
         const arr = [];
         for (var i = 0; i < post_array.length; i++){
             if (post_array[i].postTitle.includes(keyword) || post_array[i].content.includes(keyword)){
