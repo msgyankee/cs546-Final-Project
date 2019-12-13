@@ -158,31 +158,40 @@ module.exports = {
     },
 
     async getUserPosts(userID){
-        if(!userID) return Promise.reject('ID is required for get');
-        console.log("/"+userID+"/");
-        const id = new ObjectID(userID);
-        const userCollection = await users();
+        try {
+            if(!userID) return Promise.reject('ID is required for get');
 
-        const user = await userCollection.findOne({_id: id});
-        if(user === null) return Promise.reject('User not found');
+            const id = new ObjectID(userID);
+            const userCollection = await users();
+
+            const user = await userCollection.findOne({_id: id});
+            if(user === null) return Promise.reject('User not found');
         
-        const arr = user.posts.map( postID => postData.getPost(postID));
+            const arr = user.posts.map( postID => postData.getPost(postID));
 
-        return arr;
+            return arr;
+        } catch(e) {
+            return Promise.reject("invalid userID")
+        }
+        
     },
 
     async getUserFavorites(userID){
-        if(!userID) return Promise.reject('ID is required for get');
+        try {
+            if(!userID) return Promise.reject('ID is required for get');
 
-        const id = new ObjectID(userID);
-        const userCollection = await users();
+            const id = new ObjectID(userID);
+            const userCollection = await users();
 
-        const user = await userCollection.findOne({_id: id});
-        if(user === null) return Promise.reject('User not found');
+            const user = await userCollection.findOne({_id: id});
+            if(user === null) return Promise.reject('User not found');
 
-        const arr = user.posts.map( postID => postData.getPost(postID));
+            const arr = user.posts.map( postID => postData.getPost(postID));
 
-        return arr;
+            return arr;
+        } catch(e) {
+            return Promise.reject("invalid userID");
+        }
     },
 
     async userExists(username){
