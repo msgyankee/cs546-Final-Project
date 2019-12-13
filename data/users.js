@@ -85,9 +85,7 @@ module.exports = {
         if(user === null) return Promise.reject('User not found');
         
         const arr = user.posts;
-        console.log("arr: "+arr);
         arr.push(postID);
-        console.log("Post-Push: "+ arr);
 
         const updatedUser = {
             username: user.username,
@@ -97,8 +95,6 @@ module.exports = {
             favorites: user.favorites
         };
 
-        console.log("Expected post ID: "+postID);
-        console.log(updatedUser.posts);
 
         const updatedInfo = await userCollection.updateOne({_id: id}, {$set: updatedUser});
         if(updatedInfo.modifiedCount === 0) return Promise.reject('Could not update user posts successfully');
@@ -165,20 +161,24 @@ module.exports = {
 
     async getUserPosts(userID){
         //try {
-            if(!userID) return Promise.reject('ID is required for get');
+        if(!userID) return Promise.reject('ID is required for get');
 
-            const id = new ObjectID(userID);
-            const userCollection = await users();
+        const id = new ObjectID(userID);
+        const userCollection = await users();
 
-            const user = await userCollection.findOne({_id: id});
-            if(user === null) return Promise.reject('User not found');
-            console.log(user);
-            arr = user.posts;
-            console.log(arr);
-            console.log(typeof arr);
-            const posts = arr.map( postID => postData.getPost(postID));
-
-            return posts;
+        const user = await userCollection.findOne({_id: id});
+        if(user === null) return Promise.reject('User not found');
+        arr = user.posts;
+        let posts = [];
+        let i = 0;
+        console.log(arr);
+        for(i = 0; i < arr.length;i++){
+            console.log("looping... "+i);
+            posts.push(await postData.getPost(arr[i]));
+        }
+        //const posts = await arr.map( async function (postID) { return await postData.getPost(postID)});
+        console.log(posts);        
+        return posts;
         //} catch(e) {
         //    return Promise.reject("invalid userID")
         //}
