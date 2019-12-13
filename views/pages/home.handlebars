@@ -1,0 +1,16 @@
+{{#each posts}}
+    <h1>{{postTitle}}</h1>
+    <h2>{{movieTitle}}</h2>
+    <h3>{{genre}}</h3>
+    {{#if type=0}}
+        <p>{{content}}</p>
+    {{/if}}
+
+    {{#if type=1}}
+    <img src="{{content}}">
+    {{/if}}
+
+    {{#if type=2}}
+        {{content}}
+    {{/if}}   
+{{/each}}
