@@ -13,4 +13,7 @@
     <label for="content">Content:</label> 
     <input type="text" name="content" id="content">
     <button type="Submit" value="Submit">Submit</button>
+    {{#if reqFields}}
+        <p class="error">Please fill out all fields!</p>
+    {{/if}}
 </form>
