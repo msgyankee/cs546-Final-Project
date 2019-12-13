@@ -2,14 +2,14 @@
     <h2>{{post.author}}</h2>
     <h3>{{post.movieTitle}}</h3>
     <h4>{{post.genre}}</h4>
-    {{#if post.type=0}}
+    {{#if_eq post.type 0}}
         <p>{{post.content}}</p>
-    {{/if}}
+    {{/if_eq}}
 
-    {{#if post.type=1}}
+    {{#if_eq post.type 1}}
     <img src="{{post.content}}">
-    {{/if}}
+    {{/if_eq}}
 
-    {{#if post.type=2}}
+    {{#if_eq post.type 2}}
         {{post.content}}
-    {{/if}} 
+    {{/if_eq}} 

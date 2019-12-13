@@ -8,7 +8,7 @@ const userData = data.users;
 router.get('/', async (req,res) => {
    try{
         if(req.session.loginStatus){
-            const user = userData.userBySession(req.session.loginStatus);
+            const user = await userData.userBySession(req.session.loginStatus);
             if(user !== null) res.redirect(`/user/${user._id}`);
         } 
 

@@ -84,13 +84,21 @@ module.exports = {
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');
         
+        const arr = user.posts;
+        console.log("arr: "+arr);
+        arr.push(postID);
+        console.log("Post-Push: "+ arr);
+
         const updatedUser = {
             username: user.username,
             hashedPassword: user.hashedPassword,
             sessionID: user.sessionID,
-            posts: user.posts.push(postID),
+            posts: arr,
             favorites: user.favorites
         };
+
+        console.log("Expected post ID: "+postID);
+        console.log(updatedUser.posts);
 
         const updatedInfo = await userCollection.updateOne({_id: id}, {$set: updatedUser});
         if(updatedInfo.modifiedCount === 0) return Promise.reject('Could not update user posts successfully');
@@ -156,7 +164,7 @@ module.exports = {
     },
 
     async getUserPosts(userID){
-        try {
+        //try {
             if(!userID) return Promise.reject('ID is required for get');
 
             const id = new ObjectID(userID);
@@ -164,13 +172,16 @@ module.exports = {
 
             const user = await userCollection.findOne({_id: id});
             if(user === null) return Promise.reject('User not found');
-        
-            const arr = user.posts.map( postID => postData.getPost(postID));
+            console.log(user);
+            arr = user.posts;
+            console.log(arr);
+            console.log(typeof arr);
+            const posts = arr.map( postID => postData.getPost(postID));
 
-            return arr;
-        } catch(e) {
-            return Promise.reject("invalid userID")
-        }
+            return posts;
+        //} catch(e) {
+        //    return Promise.reject("invalid userID")
+        //}
         
     },
 

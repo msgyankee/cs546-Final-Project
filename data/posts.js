@@ -1,6 +1,8 @@
 const collections = require('./collections');
 const users = require('./users');
 const posts = collections.posts;
+var ObjectID = require('mongodb').ObjectID;
+
 
 module.exports = {
     async create(userID, username, type, postTitle, movieTitle, genre, content){

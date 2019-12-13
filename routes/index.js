@@ -36,15 +36,15 @@ const constructorMethod = app => {
             const status = false;
             if(!req.session.loginStatus) login = false;
             else try{
-                const user = userData.userBySession(req.session.loginStatus);
+                const user = await userData.userBySession(req.session.loginStatus);
                 if(user !== null){
-                    status = userData.isFavorite(user._id, postID);
+                    status = await userData.isFavorite(user._id, postID);
                 }
             } catch(e){
                 status = false;
             }
 
-            const post = postData.getPost(postID);
+            const post = await postData.getPost(postID);
 
 
             res.render('pages/post', {title: post.postTitle, post: post, login: login, favorite: status});
@@ -53,19 +53,19 @@ const constructorMethod = app => {
         }
     });
 
-    app.post('/search/:query', (req,res) => {
+    app.post('/search/:query', async (req,res) => {
         if(!req.body.query) res.redirect('/');
         try{
-            const arr = postData.searchPost(req.body.query);
+            const arr = await postData.searchPost(req.body.query);
             res.render("pages/search", {title: "Search Results", posts: arr});
         } catch(e){
             res.status(500).json({error: e});
         }
     });
 
-    app.get('/random', (req,res) => {
+    app.get('/random', async (req,res) => {
         try{
-            const post = postData.getRandom();
+            const post = await postData.getRandom();
             res.redirect(`/post/${post}`);
         } catch(e){
             res.status(500).json({error: e}); 
