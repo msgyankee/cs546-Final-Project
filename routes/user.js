@@ -36,7 +36,10 @@ router.post("/favorite/:id", async(req, res) => {
         }
         
     }
-})
+    catch(e){
+        res.status(500).json({error:e});
+    }
+});
 
 
 module.exports = router;    
