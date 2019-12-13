@@ -3,8 +3,10 @@ const app = express();
 const exphbs = require('express-handlebars');
 const session = require('express-session');
 const configRoutes = require('./routes');
+const static = express.static(__dirname + '/public');
 
 
+app.use('/public', static)
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
