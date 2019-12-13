@@ -1,7 +1,9 @@
+<div class = "signup_style">
+    <h2> Sign Up Here! </h2>
 <form id="signup-form" method="POST" action="/signup">
-    <label for="username">Username:</label>
+    <label for="username">Create Username:</label>
     <input type="text" name="username" id="username" required>
-    <label for="password">Password:</label>
+    <label for="password">Create Password:</label>
     <input type="password" name="password" id="password" required>
     <button type="Submit" value="Submit">Submit</button>
     {{#if badLogin}}
@@ -11,3 +13,4 @@
         <p class="error">Please fill out all fields!</p>
     {{/if}}
 </form>
+</div>
