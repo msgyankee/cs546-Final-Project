@@ -27,7 +27,7 @@ router.post('/', async (req,res) => {
         console.log(userID);
 
         const uuid = uuidv1();
-        request.session.loginStatus = uuid;
+        req.session.loginStatus = uuid;
         await userData.setSession(userID, uuid);
         res.redirect(`/user/${userID}`);
     } catch(e){

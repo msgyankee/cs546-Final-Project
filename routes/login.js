@@ -30,7 +30,9 @@ router.post("/", async (req,res) => {
         if(userID === null) res.render("pages/login", {title:"Login", badLogin: true});
         else{
             const uuid = uuidv1();
+            console.log("uuid: "+uuid);
             request.session.loginStatus = uuid;
+            console.log("uuid set");
             await userData.setSession(userID, uuid);
             res.redirect(`/user/${userID}`);
         }

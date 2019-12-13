@@ -17,6 +17,7 @@ const constructorMethod = app => {
     
     //Homepage routes
     app.get("/", async (req, res) => {
+        console.log("Homepage");
         try{
             arr = await postData.getTen(0);
             res.render('pages/home', {title: "Home", posts: arr});
@@ -90,12 +91,16 @@ const constructorMethod = app => {
     app.get("*", (req,res) => {
         res.sendStatus(404); 
     });
-    app.get('/logout', async function (request, response){
+    app.get('/logout', (request, response) => {
+        console.log("In logout");
+        const sID = request.session.loginStatus;
+        await userData.setSession(await userData.userBySession(sID), "");
         const anHourAgo = new Date();
         anHourAgo.setHours(anHourAgo.getHours() - 1);
         response.cookie("AuthCookie", "", { expires: anHourAgo });
         response.clearCookie('AuthCookie');
-        res.redirect('/');
+        console.log("Ready to redirect...");
+        response.redirect('/');
     });
 }
 module.exports = constructorMethod;

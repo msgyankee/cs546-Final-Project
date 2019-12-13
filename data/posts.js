@@ -5,7 +5,7 @@ const posts = collections.posts;
 module.exports = {
     async create(sessionID, type, postTitle, movieTitle, genre, content){
         if (!sessionID || typeof sessionID !== 'string') return Promise.reject('Must provide a valid ID');
-        if (!type || !type.isInteger()) return Promise.reject("Must provide a valid type");
+        if (!type && parseInt(type) !== 0) return Promise.reject("Must provide a valid type");
         if (!postTitle || typeof postTitle !== 'string') return Promise.reject("Must provide a valid post title");
         if (!movieTitle || typeof movieTitle !== 'string') return Promise.reject("Must provide a valid movie title");
         if (!genre || typeof genre !== 'string') return Promise.reject("Must provide a valid genre");
@@ -13,22 +13,24 @@ module.exports = {
 
         const user = users.userBySession(sessionID);
         if(user = null) return Promise.reject("User not found!");
+        else{
+            //Type: 0 for Text, 1 for Image, 2 for Video
+            const typeInt = parseInt(type);
+            const postCollection = await posts();
+            let newPost = {
+                author: user.username,
+                authorID: user._id,
+                type: typeInt,
+                postTitle: postTitle,
+                movieTitle: movieTitle,
+                genre: genre,
+                content: content
+            };
 
-        //Type: 0 for Text, 1 for Image, 2 for Video
-        const postCollection = await posts();
-        let newPost = {
-            author: user.username,
-            authorID: user._id,
-            type: type,
-            postTitle: postTitle,
-            movieTitle: movieTitle,
-            genre: genre,
-            content: content
-        };
-
-        const insertInfo = await postCollection.insertOne(newPost);
-        if (insertInfo.insertedCount === 0) return Promise.reject("Could not add post");
-        return insertCount.insertedId;
+            const insertInfo = await postCollection.insertOne(newPost);
+            if (insertInfo.insertedCount === 0) return Promise.reject("Could not add post");
+            return insertCount.insertedId;
+        }
     },
 
     async getPost(id){
@@ -55,7 +57,7 @@ module.exports = {
                 genreArray.push(post_array[i]);
             }
         }
-        if (genreArray == []) return Promise.reject(`No posts with the ${genre} genre can be found`);
+        if (genreArray == []) return null;
         return genreArray;
         
     },
@@ -69,7 +71,7 @@ module.exports = {
                 typeArray.push(post_array[i]);
             }
         }
-        if (typeArray == []) return Promise.reject(`No posts with type ${type} can be found`);
+        if (typeArray == []) return null;
         return typeArray;
     },
 

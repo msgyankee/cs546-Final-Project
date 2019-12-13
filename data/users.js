@@ -9,12 +9,10 @@ const bcrypt = require("bcryptjs");
 module.exports = {
 
     async create(username, hashedPassword) {
-        console.log(username);
-        console.log(typeof username);
         if(!username || typeof username !== 'string') return Promise.reject('Must provide valid username');
-        if(!hashedPassword || typeof password !== 'string') return Promise.reject('Must provide a valid password');
+        if(!hashedPassword) return Promise.reject('Must provide a valid password');
 
-        if(userExists(username)) return Promise.reject('Username already in use');
+        if(await this.userExists(username)) return Promise.reject('Username already in use');
 
         const userCollection = await users();
         let newUser = {
@@ -24,7 +22,6 @@ module.exports = {
             posts: [],
             favorites: []
         };
-
         const insertInfo = await userCollection.insertOne(newUser);
 
         if(insertInfo.insertedCount === 0) return Promise.reject(`Could not add user ${username}`);
@@ -36,7 +33,6 @@ module.exports = {
         const userCollection = await users();
 
         const arr = await userCollection.find({}).toArray();
-
         return arr;
     },
 
@@ -143,13 +139,15 @@ module.exports = {
         return id;
     },
 
-    async login(username, password){
-        if(!username || typeof username !== 'string') return Promise.reject('Must provide valid username');
+    async login(usernameInput, password){
+        if(!usernameInput || typeof usernameInput !== 'string') return Promise.reject('Must provide valid username');
         if(!password || typeof password !== 'string') return Promise.reject('Must provide a valid password');
 
         const userCollection = await users();
-        console.log("username: "+username);
-        const user = await userCollection.findOne({username: username});
+        console.log("username: "+usernameInput);
+        const test = await userCollection.findOne({});
+        console.log(test);
+        const user = await userCollection.findOne({username: usernameInput});
         console.log(user);
         if(user == null) return null;
         const compare = await bcrypt.compare(password, user.hashedPassword);
@@ -161,7 +159,7 @@ module.exports = {
 
     async getUserPosts(userID){
         if(!userID) return Promise.reject('ID is required for get');
-
+        console.log("/"+userID+"/");
         const id = new ObjectID(userID);
         const userCollection = await users();
 
@@ -191,10 +189,12 @@ module.exports = {
         if(!username || typeof username !== 'string') return Promise.reject('Must provide valid username');
         
         const userCollection = await users(); 
-
-        const user = await userCollection.findOne({username:usermane});
-        if(user === null) return true;
-        return false;
+        console.log("In userExists...");
+        const user = await userCollection.findOne({username:username});
+        console.log("user: "+user);
+        if(user == null) return false;
+        console.log("nah");
+        return true;
     },
 
     async userBySession(sessionID){
