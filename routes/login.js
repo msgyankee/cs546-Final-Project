@@ -24,13 +24,16 @@ router.post("/", async (req,res) => {
         res.status(401).render("pages/login",{title:"Login", reqFields:true});
     }    
     else try{
-        const userID = user.login(req.body.username, req.body.password);
+        const userID = await user.login(req.body.username, req.body.password);
+        console.log(userID);
+        console.log("here");
         if(userID === null) res.render("pages/login", {title:"Login", badLogin: true});
-
-        const uuid = uuidv1();
-        request.session.loginStatus = uuid;
-        await userData.setSession(userID, uuid);
-        res.redirect(`/user/${userID}`);
+        else{
+            const uuid = uuidv1();
+            request.session.loginStatus = uuid;
+            await userData.setSession(userID, uuid);
+            res.redirect(`/user/${userID}`);
+        }
     }catch(e){
         res.status(500).json({error: e});
     }

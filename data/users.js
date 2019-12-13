@@ -9,8 +9,10 @@ const bcrypt = require("bcryptjs");
 module.exports = {
 
     async create(username, hashedPassword) {
-        if(!username || typeof username !== String) return Promise.reject('Must provide valid username');
-        if(!hashedPassword || typeof password !== String) return Promise.reject('Must provide a valid password');
+        console.log(username);
+        console.log(typeof username);
+        if(!username || typeof username !== 'string') return Promise.reject('Must provide valid username');
+        if(!hashedPassword || typeof password !== 'string') return Promise.reject('Must provide a valid password');
 
         if(userExists(username)) return Promise.reject('Username already in use');
 
@@ -42,7 +44,7 @@ module.exports = {
         if(!userID) return Promise.reject('ID is required for get');
 
         const id = new ObjectID(userID);
-        const userCollection = users();
+        const userCollection = await users();
 
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');
@@ -54,7 +56,7 @@ module.exports = {
         if(!sessionID) return Promise.reject('Must provide Session ID to set Session ID');
         
         const id = new ObjectID(userID);
-        const userCollection = users();
+        const userCollection = await users();
 
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');
@@ -77,7 +79,7 @@ module.exports = {
         if(!postID) return Promise.reject('Must provide post ID to add post');
         
         const id = new ObjectID(userID);
-        const userCollection = users();
+        const userCollection = await users();
 
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');
@@ -100,7 +102,7 @@ module.exports = {
         if(!postID) return Promise.reject('Must provide post ID to add favorite');
         
         const id = new ObjectID(userID);
-        const userCollection = users();
+        const userCollection = await users();
 
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');
@@ -123,7 +125,7 @@ module.exports = {
         if(!postID) return Promise.reject('Must provide post ID to remove favorite');
         
         const id = new ObjectID(userID);
-        const userCollection = users();
+        const userCollection = await users();
 
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');
@@ -142,15 +144,18 @@ module.exports = {
     },
 
     async login(username, password){
-        if(!username || typeof username !== String) return Promise.reject('Must provide valid username');
-        if(!password || typeof password !== String) return Promise.reject('Must provide a valid password');
+        if(!username || typeof username !== 'string') return Promise.reject('Must provide valid username');
+        if(!password || typeof password !== 'string') return Promise.reject('Must provide a valid password');
 
-        const userCollection = users();
-
-        const user = await userCollection.findOne({username:username});
-        if(user = null) return null;
+        const userCollection = await users();
+        console.log("username: "+username);
+        const user = await userCollection.findOne({username: username});
+        console.log(user);
+        if(user == null) return null;
         const compare = await bcrypt.compare(password, user.hashedPassword);
-        if(compare = false) return null;
+        console.log(compare);
+        console.log(password);
+        if(compare == false) return null;
         return user._id;
     },
 
@@ -158,7 +163,7 @@ module.exports = {
         if(!userID) return Promise.reject('ID is required for get');
 
         const id = new ObjectID(userID);
-        const userCollection = users();
+        const userCollection = await users();
 
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');
@@ -172,7 +177,7 @@ module.exports = {
         if(!userID) return Promise.reject('ID is required for get');
 
         const id = new ObjectID(userID);
-        const userCollection = users();
+        const userCollection = await users();
 
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');
@@ -183,9 +188,9 @@ module.exports = {
     },
 
     async userExists(username){
-        if(!username || typeof username !== String) return Promise.reject('Must provide valid username');
+        if(!username || typeof username !== 'string') return Promise.reject('Must provide valid username');
         
-        const userCollection = users(); 
+        const userCollection = await users(); 
 
         const user = await userCollection.findOne({username:usermane});
         if(user === null) return true;
@@ -195,7 +200,7 @@ module.exports = {
     async userBySession(sessionID){
         if(!sessionID) return Promise.reject('Must provide sessionID to search');
 
-        const userCollection = users();
+        const userCollection = await users();
 
         const user = await userCollection.findOne({sessionID:sessionID});        
         return user;
@@ -206,7 +211,7 @@ module.exports = {
         if(!postID) return Promise.reject('Must provide post ID to add favorite');
         
         const id = new ObjectID(userID);
-        const userCollection = users();
+        const userCollection = await users();
 
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');

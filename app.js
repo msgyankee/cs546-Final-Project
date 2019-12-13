@@ -2,9 +2,8 @@ const express = require('express');
 const app = express();
 const exphbs = require('express-handlebars');
 const session = require('express-session');
-const uuidv1 = require('uuid/v1');
-const data = require('./data/data');
-const bcrypt = require("bcryptjs");
+const configRoutes = require('./routes');
+
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));

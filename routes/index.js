@@ -7,7 +7,7 @@ const data = require("../data");
 const postData = data.posts;
 const userData = data.users;
 
-const contructorMethod = app => {
+const constructorMethod = app => {
 
     //Pages w/ multiple routes go into separate files.
     app.use("/login", loginRoutes);    
@@ -19,7 +19,7 @@ const contructorMethod = app => {
     app.get("/", async (req, res) => {
         try{
             arr = await postData.getTen(0);
-            res.render('pages/home', {title: Home, posts: arr});
+            res.render('pages/home', {title: "Home", posts: arr});
         }catch(e){
             res.status(500).json({error: e});
         }  

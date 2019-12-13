@@ -24,12 +24,15 @@ router.post('/', async (req,res) => {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         userID = await userData.create(req.body.username, hashedPassword);
 
+        console.log(userID);
+
         const uuid = uuidv1();
         request.session.loginStatus = uuid;
         await userData.setSession(userID, uuid);
         res.redirect(`/user/${userID}`);
     } catch(e){
-        res.render("pages/signup", {title: "Signup", badLogin: true});
+        //res.render("pages/signup", {title: "Signup", badLogin: true});
+        res.status(500).json({error: e});
     }
 });
 
