@@ -3,27 +3,21 @@ const users = require('./users');
 const posts = collections.posts;
 
 module.exports = {
-    async create(sessionID, type, postTitle, movieTitle, genre, content){
-        
-        console.log(sessionID);
-        console.log(type);
-        console.log(postTitle);if (!sessionID || typeof sessionID !== 'string') return Promise.reject('Must provide a valid session');
+    async create(userID, username, type, postTitle, movieTitle, genre, content){
+        if (!userID) return Promise.reject('Must provide a valid user');
+        if (!username) return Promise.reject('Function must provide a username');
         if (!type && parseInt(type) !== 0) return Promise.reject("Must provide a valid type");
         if (!postTitle || typeof postTitle !== 'string') return Promise.reject("Must provide a valid post title");
         if (!movieTitle || typeof movieTitle !== 'string') return Promise.reject("Must provide a valid movie title");
         if (!genre || typeof genre !== 'string') return Promise.reject("Must provide a valid genre");
         if (!content || typeof content !== 'string') return Promise.reject("Must provide valid content");
-        console.log("here");
-        const user = await users.userBySession(sessionID);
-        console.log(user);
-        if(user == null) return Promise.reject("User not found!");
-        else{
+        
             //Type: 0 for Text, 1 for Image, 2 for Video
             const typeInt = parseInt(type);
             const postCollection = await posts();
             let newPost = {
-                author: user.username,
-                authorID: user._id,
+                author: username,
+                authorID: userID,
                 type: typeInt,
                 postTitle: postTitle,
                 movieTitle: movieTitle,
@@ -33,8 +27,8 @@ module.exports = {
 
             const insertInfo = await postCollection.insertOne(newPost);
             if (insertInfo.insertedCount === 0) return Promise.reject("Could not add post");
-            return insertCount.insertedId;
-        }
+            return insertInfo.insertedId;
+        
     },
 
     async getPost(id){

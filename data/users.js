@@ -202,8 +202,6 @@ module.exports = {
     },
 
     async userBySession(sessionID){
-        console.log("user by session")
-        console.log(sessionID);
         if(!sessionID) return Promise.reject('Must provide sessionID to search');
         const userCollection = await users();
 
