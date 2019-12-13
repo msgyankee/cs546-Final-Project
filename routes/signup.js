@@ -8,7 +8,7 @@ const userData = data.users;
 router.get('/', async (req,res) => {
    try{
         if(req.session.loginStatus){
-            const user = userData.userBySession(req.session.loginStatus);
+            const user = await userData.userBySession(req.session.loginStatus);
             if(user !== null) res.redirect(`/user/${user._id}`);
         } 
 
@@ -24,12 +24,15 @@ router.post('/', async (req,res) => {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         userID = await userData.create(req.body.username, hashedPassword);
 
+        console.log(userID);
+
         const uuid = uuidv1();
-        request.session.loginStatus = uuid;
+        req.session.loginStatus = uuid;
         await userData.setSession(userID, uuid);
         res.redirect(`/user/${userID}`);
     } catch(e){
-        res.render("pages/signup", {title: "Signup", badLogin: true});
+        //res.render("pages/signup", {title: "Signup", badLogin: true});
+        res.status(500).json({error: e});
     }
 });
 

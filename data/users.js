@@ -9,10 +9,10 @@ const bcrypt = require("bcryptjs");
 module.exports = {
 
     async create(username, hashedPassword) {
-        if(!username || typeof username !== String) return Promise.reject('Must provide valid username');
-        if(!hashedPassword || typeof password !== String) return Promise.reject('Must provide a valid password');
+        if(!username || typeof username !== 'string') return Promise.reject('Must provide valid username');
+        if(!hashedPassword) return Promise.reject('Must provide a valid password');
 
-        if(userExists(username)) return Promise.reject('Username already in use');
+        if(await this.userExists(username)) return Promise.reject('Username already in use');
 
         const userCollection = await users();
         let newUser = {
@@ -22,7 +22,6 @@ module.exports = {
             posts: [],
             favorites: []
         };
-
         const insertInfo = await userCollection.insertOne(newUser);
 
         if(insertInfo.insertedCount === 0) return Promise.reject(`Could not add user ${username}`);
@@ -34,27 +33,30 @@ module.exports = {
         const userCollection = await users();
 
         const arr = await userCollection.find({}).toArray();
-
         return arr;
     },
 
     async getUser(userID){
         if(!userID) return Promise.reject('ID is required for get');
 
+        try{
         const id = new ObjectID(userID);
-        const userCollection = users();
+        } catch(e){
+            return null;
+        }
+        const userCollection = await users();
 
         const user = await userCollection.findOne({_id: id});
-        if(user === null) return Promise.reject('User not found');
+        if(user === null) return null;
         return user;
     },
 
     async setSession(userID, sessionID){
         if(!userID) return Promise.reject('Must provide a user ID to set session');
-        if(!sessionID) return Promise.reject('Must provide Session ID to set Session ID');
+        if(!sessionID && sessionID !== "") return Promise.reject('Must provide Session ID to set Session ID');
         
         const id = new ObjectID(userID);
-        const userCollection = users();
+        const userCollection = await users();
 
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');
@@ -77,18 +79,22 @@ module.exports = {
         if(!postID) return Promise.reject('Must provide post ID to add post');
         
         const id = new ObjectID(userID);
-        const userCollection = users();
+        const userCollection = await users();
 
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');
         
+        const arr = user.posts;
+        arr.push(postID);
+
         const updatedUser = {
             username: user.username,
             hashedPassword: user.hashedPassword,
             sessionID: user.sessionID,
-            posts: user.posts.push(postID),
+            posts: arr,
             favorites: user.favorites
         };
+
 
         const updatedInfo = await userCollection.updateOne({_id: id}, {$set: updatedUser});
         if(updatedInfo.modifiedCount === 0) return Promise.reject('Could not update user posts successfully');
@@ -100,7 +106,7 @@ module.exports = {
         if(!postID) return Promise.reject('Must provide post ID to add favorite');
         
         const id = new ObjectID(userID);
-        const userCollection = users();
+        const userCollection = await users();
 
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');
@@ -123,7 +129,7 @@ module.exports = {
         if(!postID) return Promise.reject('Must provide post ID to remove favorite');
         
         const id = new ObjectID(userID);
-        const userCollection = users();
+        const userCollection = await users();
 
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');
@@ -141,63 +147,77 @@ module.exports = {
         return id;
     },
 
-    async login(username, password){
-        if(!username || typeof username !== String) return Promise.reject('Must provide valid username');
-        if(!password || typeof password !== String) return Promise.reject('Must provide a valid password');
+    async login(usernameInput, password){
+        if(!usernameInput || typeof usernameInput !== 'string') return Promise.reject('Must provide valid username');
+        if(!password || typeof password !== 'string') return Promise.reject('Must provide a valid password');
 
-        const userCollection = users();
-
-        const user = await userCollection.findOne({username:username});
-        if(user = null) return null;
+        const userCollection = await users();
+        const user = await userCollection.findOne({username: usernameInput});
+        if(user == null) return null;
         const compare = await bcrypt.compare(password, user.hashedPassword);
-        if(compare = false) return null;
+        if(compare == false) return null;
         return user._id;
     },
 
     async getUserPosts(userID){
+        //try {
         if(!userID) return Promise.reject('ID is required for get');
 
         const id = new ObjectID(userID);
-        const userCollection = users();
+        const userCollection = await users();
 
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');
+        arr = user.posts;
+        let posts = [];
+        let i = 0;
+        console.log(arr);
+        for(i = 0; i < arr.length;i++){
+            console.log("looping... "+i);
+            posts.push(await postData.getPost(arr[i]));
+        }
+        //const posts = await arr.map( async function (postID) { return await postData.getPost(postID)});
+        console.log(posts);        
+        return posts;
+        //} catch(e) {
+        //    return Promise.reject("invalid userID")
+        //}
         
-        const arr = user.posts.map( postID => postData.getPost(postID));
-
-        return arr;
     },
 
     async getUserFavorites(userID){
-        if(!userID) return Promise.reject('ID is required for get');
+        try {
+            if(!userID) return Promise.reject('ID is required for get');
 
-        const id = new ObjectID(userID);
-        const userCollection = users();
+            const id = new ObjectID(userID);
+            const userCollection = await users();
 
-        const user = await userCollection.findOne({_id: id});
-        if(user === null) return Promise.reject('User not found');
+            const user = await userCollection.findOne({_id: id});
+            if(user === null) return Promise.reject('User not found');
 
-        const arr = user.posts.map( postID => postData.getPost(postID));
+            const arr = user.posts.map( postID => postData.getPost(postID));
 
-        return arr;
+            return arr;
+        } catch(e) {
+            return Promise.reject("invalid userID");
+        }
     },
 
     async userExists(username){
-        if(!username || typeof username !== String) return Promise.reject('Must provide valid username');
+        if(!username || typeof username !== 'string') return Promise.reject('Must provide valid username');
         
-        const userCollection = users(); 
-
-        const user = await userCollection.findOne({username:usermane});
-        if(user === null) return true;
-        return false;
+        const userCollection = await users(); 
+        const user = await userCollection.findOne({username:username});
+        if(user == null) return false;
+        return true;
     },
 
     async userBySession(sessionID){
         if(!sessionID) return Promise.reject('Must provide sessionID to search');
-
-        const userCollection = users();
+        const userCollection = await users();
 
         const user = await userCollection.findOne({sessionID:sessionID});        
+        console.log(user);
         return user;
     },
      
@@ -206,7 +226,7 @@ module.exports = {
         if(!postID) return Promise.reject('Must provide post ID to add favorite');
         
         const id = new ObjectID(userID);
-        const userCollection = users();
+        const userCollection = await users();
 
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');

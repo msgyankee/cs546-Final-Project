@@ -2,27 +2,36 @@ const express = require('express');
 const app = express();
 const exphbs = require('express-handlebars');
 const session = require('express-session');
-const uuidv1 = require('uuid/v1');
-const data = require('./data/data');
-const bcrypt = require("bcryptjs");
+const configRoutes = require('./routes');
+
 
 app.use(express.json());
 app.use(express.urlencoded({extended: true}));
 
-app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+let hbs = exphbs.create({
+  helpers: {
+    'if_eq': function(a,b) { if(a === b) return true; else{ return false; }}
+  },
+  defaultLayout: 'main'
+});
+
+//app.engine('handlebars', exphbs({defaultLayout: 'main'}));
+app.engine('handlebars', hbs.engine);
 app.set('view engine', 'handlebars');
+
 
 //Use session cookie
 app.use(session({
     name: 'AuthCookie',
     secret: 'very scret string!',
     resave: false,
-    saveUninitialized: true
-  }));
+    saveUninitialized: true,
+    httpOnly: false
+  }))
 
 //Middleware
 app.use('/create', function(request, response, next){
-  if(!request.session.loginStatus) response.status(403).render('pages/login');
+  if(!request.session.loginStatus) response.status(403).redirect('/login');
   else{next();}
 });
 

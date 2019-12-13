@@ -5,37 +5,36 @@ const userData = require("../data/users");
 
 router.get("/:id", async(req, res) => {
     try{
-        await userData.get(req.params.id);
-        const data = userData.userBySession(req.session.loginStatus);
-        if (data == null) res.redirect("/");
-        else {
-            arr = userData.getUserPosts(data._id);
-            fav = userData.getUserFavorites(data._id);
+        if(!req.params.id) res.redirect("/");
+        else{ 
+            arr = await userData.getUserPosts(req.params.id);
+            fav = await userData.getUserFavorites(req.params.id);
             res.render('pages/profile', {title: 'Profile', posts: arr, favorites: fav});
         }
 
     } catch(e){
-        res.status(500).json({error:e});
+        res.redirect("/");
     }
 });
 
 router.post("/favorite/:id", async(req, res) => {
     try{
-        await userData.get(req.params.id);
-        const postID = await postData.create(req.session.loginStatus, req.body.type, req.body.postTitle, req.body.movieTitle, req.body.genre, req.body.content);
-        const user = userData.userBySession(req.session.loginStatus);
-        userID = user._id;
-        if (user == null) res.redirect("/");
-        else {
-            if (user.userdata.isFavorite(userID, postID)) {
-                user.userdata.remFavorite(userID, postID);
-            }
+        if(!req.params.id) res.redirect("/");
+        else{
+            const postID = parseInt(req.params.id);
+            const user = await userData.userBySession(req.session.loginStatus);
+            if (user == null) res.redirect("/");
             else {
-                user.userdata.addFavorite(userID, postID);
+                userID = user._id;
+                if (await userdata.isFavorite(userID, postID)) {
+                    await userdata.remFavorite(userID, postID);
+                }
+                else {
+                    await userdata.addFavorite(userID, postID);
+                }
+                res.redirect(`/post/${postID}`);
             }
-            res.redirect("/post/");
         }
-        
     }
     catch(e){
         res.status(500).json({error:e});
