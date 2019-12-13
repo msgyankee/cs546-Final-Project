@@ -24,8 +24,6 @@ router.post('/', async (req,res) => {
         const hashedPassword = await bcrypt.hash(req.body.password, 10);
         userID = await userData.create(req.body.username, hashedPassword);
 
-        console.log(userID);
-
         const uuid = uuidv1();
         req.session.loginStatus = uuid;
         await userData.setSession(userID, uuid);

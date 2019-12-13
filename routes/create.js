@@ -23,7 +23,7 @@ router.post('/', async (req,res) => {
        
         const userID = user._id;
         await userData.addPost(userID, postID);
-        res.redirect(`/posts/${postID}`);
+        res.redirect(`/post/${postID}`);
     } catch(e) {
         res.status(500).json({error: e});
     }

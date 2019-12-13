@@ -17,9 +17,8 @@ const constructorMethod = app => {
     
     //Homepage routes
     app.get("/", async (req, res) => {
-        console.log("Homepage");
         try{
-            arr = await postData.getTen(0);
+            let arr = await postData.getTen(0);
             res.render('pages/home', {title: "Home", posts: arr});
         }catch(e){
             res.status(500).json({error: e});
@@ -31,11 +30,13 @@ const constructorMethod = app => {
     app.get('/post/:id', async (req, res) => {
         if(!req.params.id) res.redirect('/');
         else try{
-            const postID =parseInt(req.params.id)
-            const login = true;
-            const status = false;
+            const postID = req.params.id;
+            let login = true;
+            let status = false;
+            console.log("Post ID: "+postID);
             if(!req.session.loginStatus) login = false;
             else try{
+                console.log("in the try");
                 const user = await userData.userBySession(req.session.loginStatus);
                 if(user !== null){
                     status = await userData.isFavorite(user._id, postID);
@@ -43,9 +44,11 @@ const constructorMethod = app => {
             } catch(e){
                 status = false;
             }
-
+            console.log("Status check complete...");
+            console.log("Logged in: "+login);
+            console.log("Favorited: "+status);
             const post = await postData.getPost(postID);
-
+            console.log("Post retreived: "+post);
 
             res.render('pages/post', {title: post.postTitle, post: post, login: login, favorite: status});
         } catch(e){
@@ -74,14 +77,11 @@ const constructorMethod = app => {
 
     
     app.get("/logout", async (req, res) => {
-        console.log("In logout");
-        console.log(req.session.loginStatus);
         await userData.setSession((await userData.userBySession(req.session.loginStatus))._id, "");
         const anHourAgo = new Date();
         anHourAgo.setHours(anHourAgo.getHours() - 1);
         res.cookie("AuthCookie", "", { expires: anHourAgo });
         res.clearCookie('AuthCookie');
-        console.log("Ready to redirect...");
         res.redirect('/');
     });
 

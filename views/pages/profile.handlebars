@@ -1,4 +1,8 @@
 <h1>User Posts:</h1>
+
+{{#if noPost}}
+    <p>No Posts Yet! <a href="localhost/3000/create">Create one now!</a></p>
+{{/if}}
 {{#each posts}}
     <h1>{{postTitle}}</h1>
     <h2>{{author}}</h2>
@@ -18,8 +22,12 @@
 {{/each}}
 
 <h1>User Favorites:</h1>
+{{#if noFav}}
+    <p>No Favorites Yet!</p>
+{{/if}}
 
-{{#each Favorites}}
+
+{{#each favorites}}
     <h1>{{postTitle}}</h1>
     <h2>{{author}}</h2>
     <h3>{{movieTitle}}</h3>

@@ -7,9 +7,13 @@ router.get("/:id", async(req, res) => {
     try{
         if(!req.params.id) res.redirect("/");
         else{ 
-            arr = await userData.getUserPosts(req.params.id);
-            fav = await userData.getUserFavorites(req.params.id);
-            res.render('pages/profile', {title: 'Profile', posts: arr, favorites: fav});
+            let arr = await userData.getUserPosts(req.params.id);
+            let fav = await userData.getUserFavorites(req.params.id);
+            
+            if(arr.length == 0 && fav.length == 0) res.render('pages/profile', {title: 'Profile', noPost: true, noFav: true});
+            else if(arr.length == 0) res.render('pages/profile', {title: 'Profile', favorites: fav, noPost: true});
+            else if(fav.length == 0) res.render('pages/profile', {title: 'Profile', posts: arr, noFav: true});
+            else { res.render('pages/profile', {title: 'Profile', posts: arr, favorites: fav}); }
         }
 
     } catch(e){
