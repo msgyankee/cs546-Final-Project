@@ -337,7 +337,39 @@ body {
     font: 18px 'Open Sans Condensed', arial, sans;
     height: 45px;
 }
+.home_style button[type=button]:disabled  
+{
+    /* -moz-box-shadow: inset 0px 1px 0px 0px #45D6D6;
+    -webkit-box-shadow: inset 0px 1px 0px 0px #45D6D6; */
+    /* box-shadow: inset 0px 1px 0px 0px #45D6D6; */
+    background-color: rgb(180, 244, 244);
+    /* border: 1px solid #27A0A0;
+    display: inline-block; */
+    cursor: pointer;
+    color: rgba(255, 255, 255, 0.714);
+    font-family: "Courier New", Courier, monospace;
+    font-size: 16px;
+    padding: 8px 18px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
 
+.home_style button[type=button]  
+{
+    -moz-box-shadow: inset 0px 1px 0px 0px #45D6D6;
+    -webkit-box-shadow: inset 0px 1px 0px 0px #45D6D6;
+    box-shadow: inset 0px 1px 0px 0px #45D6D6;
+    background-color: #2CBBBB;
+    border: 1px solid #27A0A0;
+    display: inline-block;
+    cursor: pointer;
+    color: #FFFFFF;
+    font-family: "Courier New", Courier, monospace;
+    font-size: 16px;
+    padding: 8px 18px;
+    text-decoration: none;
+    text-transform: uppercase;
+}
 /* Search CSS */
 .search_style {
     float: left;
