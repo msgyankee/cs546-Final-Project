@@ -78,7 +78,7 @@ const constructorMethod = app => {
 
     //All undefined pages get sent 404. Make error page?
     app.get("*", (req,res) => {
-        res.sendStatus(404); 
+        res.redirect("/0"); 
     });
 }
 module.exports = constructorMethod;
