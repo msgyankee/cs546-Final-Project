@@ -22,14 +22,15 @@
             {{{post.src}}}
         </div>
         <p>{{post.content}}</p>
-    {{/if_eq}} 
-        {{#unless favorite}}
-        <form id=fav-button method=POST action="/user/favorite/{{post._id}}">
-            <button type="Submit">Add Favorite</button> 
-        </form>
-        {{/unless}}
+    {{/if_eq}}
+    
+        {{#if login}} 
+            {{#unless favorite}}
+                <form id=fav-button method=POST action="/user/favorite/{{post._id}}">
+                    <button type="Submit">Add Favorite</button> 
+                </form>
+            {{/unless}}
         
-        {{#if login}}
             {{#if favorite}}
                 <form id=fav-button method=POST action="/user/favorite/{{post._id}}">
                     <button type="Submit">Remove Favorite</button> 
