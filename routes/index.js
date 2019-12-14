@@ -23,29 +23,6 @@ const constructorMethod = app => {
     
     //Homepage route
     app.get("/", async (req, res) => {
-        /*try{
-            let login = true;
-            let userID = "";
-            if(!req.session.loginStatus) login = false;
-            else try{
-                const user = await userData.userBySession(req.session.loginStatus);
-                if(user !== null){
-                    userID = user._id;
-                }
-            } catch(e){
-                login = false
-                userID = false;
-            }
-            let arr = await postData.getTen(0);
-            let disabledLast = true;
-            let disabledNext = true;
-            if(parseInt(await postData.getPostNum()) > 10) disabledNext = false;
-
-            if(login)res.render('pages/home', {title: "Home", login: true, userID: userID, posts: arr, last: disabledLast, next: disabledNext});
-            else{ res.render('pages/home', {title: "Home", posts: arr, last: disabledLast, next: disabledNext}); }
-        }catch(e){
-            res.status(500).json({error: e});
-        } */
         res.redirect("/0"); 
     });
 
@@ -64,7 +41,8 @@ const constructorMethod = app => {
 
     //Dynamic route can overwrite others, so its at the bottom 
     app.get('/:id', async (req, res) => {
-        if(!req.params.id) res.redirect('/');
+        console.log(parseInt(req.params.id));
+        if(!req.params.id|| (!parseInt(req.params.id) && parseInt(req.params.id) !== 0)) res.redirect('/0');
         else try{
             
             let login = true;

@@ -22,11 +22,10 @@ router.get('/:id', async (req, res) => {
             login = false;
             status = false;
         }
-        console.log(login);
         const post = await postData.getPost(postID);
         res.render('pages/post', {title: post.postTitle, post: post, login: login, userID: userID, favorite: status});
     } catch(e){
-        res.status(500).json({error: e});   
+        res.redirect("/0");   
     }
 });
 

@@ -30,7 +30,7 @@ router.get("/:id", async(req, res) => {
         }
 
     } catch(e){
-        res.redirect("/");
+        res.redirect("/0");
     }
 });
 
