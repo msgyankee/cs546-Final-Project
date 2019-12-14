@@ -13,11 +13,13 @@
     {{/if_eq}}
 
     {{#if_eq type 1}}
-    <img src="{{content}}">
+        <img src="{{post.src}}">
+        <p>{{post.content}}</p>    
     {{/if_eq}}
 
     {{#if_eq type 2}}
-        {{content}}
+        {{{post.src}}}
+        <p>{{post.content}}</p>
     {{/if_eq}}   
 {{/each}}
 
@@ -37,11 +39,11 @@
     {{/if_eq}}
 
     {{#if_eq type 1}}
-    <img src="{{content}}">
-    {{/if_eq}}
-
+        <img src="{{post.src}}">
+        <p>{{post.content}}</p>    {{/if_eq}}
     {{#if_eq type 2}}
-        {{content}}
+        {{{post.src}}}
+        <p>{{post.content}}</p>
     {{/if_eq}}   
 {{/each}}
 </div>

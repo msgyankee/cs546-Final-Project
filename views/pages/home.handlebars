@@ -8,10 +8,12 @@
     {{/if_eq}}
 
     {{#if_eq type 1}}
-    <img src="{{content}}">
+        <img src="{{post.src}}">
+        <p>{{post.content}}</p>
     {{/if_eq}}
 
     {{#if_eq type 2}}
-        {{content}}
+        {{{post.src}}}
+        <p>{{post.content}}</p>
     {{/if_eq}}   
 {{/each}}

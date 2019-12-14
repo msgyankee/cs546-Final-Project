@@ -21,9 +21,11 @@
     {{/if_eq}}
 
     {{#if_eq post.type 1}}
-    <img src="{{post.content}}">
+        <img src="{{post.src}}">
+        <p>{{post.content}}</p>
     {{/if_eq}}
 
     {{#if_eq post.type 2}}
-        {{post.content}}
+        {{{post.src}}}
+        <p>{{post.content}}</p>
     {{/if_eq}} 

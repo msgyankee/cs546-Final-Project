@@ -5,7 +5,7 @@ var ObjectID = require('mongodb').ObjectID;
 
 
 module.exports = {
-    async create(userID, username, type, postTitle, movieTitle, genre, content){
+    async create(userID, username, type, postTitle, movieTitle, genre, src, content){
         if (!userID) return Promise.reject('Must provide a valid user');
         if (!username) return Promise.reject('Function must provide a username');
         if (!type && parseInt(type) !== 0) return Promise.reject("Must provide a valid type");
@@ -24,6 +24,7 @@ module.exports = {
                 postTitle: postTitle,
                 movieTitle: movieTitle,
                 genre: genre,
+                src: src,
                 content: content
             };
 
