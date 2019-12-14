@@ -11,12 +11,16 @@
     {{/if_eq}}
 
     {{#if_eq type 1}}
-        <img src="{{src}}">
-        <p>{{content}}</p>
+        <div class="image">
+            <img src="{{src}}">
+            <p>{{content}}</p>
+        </div>
     {{/if_eq}}
 
     {{#if_eq type 2}}
-        {{{src}}}
+        <div class = "video">
+            {{{src}}}
+        </div>
         <p>{{content}}</p>
     {{/if_eq}} 
 </div>  
