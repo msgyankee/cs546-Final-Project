@@ -1,6 +1,6 @@
 {
   "mongoConfig": {
     "serverUrl": "mongodb://localhost:27017/",
-    "database": "AMD_Testing_DB_3"
+    "database": "AMD_Presentation_1"
   }
 }
