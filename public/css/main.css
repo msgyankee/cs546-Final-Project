@@ -1,6 +1,12 @@
 body {
     font-family: 'Open Sans Condensed', arial, sans;
+}
+
 /* Navigation Bar*/
+
+#title {
+    background-color: #630c0c;
+    color:white;
 }
 .nav {
     overflow:hidden;
