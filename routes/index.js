@@ -23,7 +23,7 @@ const constructorMethod = app => {
     
     //Homepage route
     app.get("/", async (req, res) => {
-        try{
+        /*try{
             let login = true;
             let userID = "";
             if(!req.session.loginStatus) login = false;
@@ -37,13 +37,16 @@ const constructorMethod = app => {
                 userID = false;
             }
             let arr = await postData.getTen(0);
-            //let disabled = 
+            let disabledLast = true;
+            let disabledNext = true;
+            if(parseInt(await postData.getPostNum()) > 10) disabledNext = false;
 
-            if(login)res.render('pages/home', {title: "Home", login: true, userID: userID, posts: arr});
-            else{ res.render('pages/home', {title: "Home", posts: arr}); }
+            if(login)res.render('pages/home', {title: "Home", login: true, userID: userID, posts: arr, last: disabledLast, next: disabledNext});
+            else{ res.render('pages/home', {title: "Home", posts: arr, last: disabledLast, next: disabledNext}); }
         }catch(e){
             res.status(500).json({error: e});
-        }  
+        } */
+        res.redirect("/0"); 
     });
 
     //Logout automatically redirects back to home.
@@ -55,6 +58,9 @@ const constructorMethod = app => {
         res.clearCookie('AuthCookie');
         res.redirect('/');
     });
+
+    //Getting a console error about this. trying to shut it up
+    app.get("/favicon.ico", (req,res) => {return 0});
 
     //Dynamic route can overwrite others, so its at the bottom 
     app.get('/:id', async (req, res) => {
@@ -75,12 +81,18 @@ const constructorMethod = app => {
             }
             
             const pageNum = parseInt(req.params.id);
-            const postCount = await postData.getPostNum();
-            if(pageNum < 0) res.redirect('/');
-            else if(pageNum >= Math.floor(postCount/10)) res.redirect(`/${Math.floor(postCount/10)}`);
+            const postCount = parseInt(await postData.getPostNum());
+            
+            let disabledLast = true;
+            let disabledNext = true;
+            if(pageNum > 0) disabledLast = false;
+            if(pageNum < Math.floor(postCount/10)) disabledNext = false;
+
+            if(pageNum < 0) res.redirect('/0'); 
+            else if(pageNum > Math.floor(postCount/10)) res.redirect(`/${Math.floor(postCount/10)}`);
             else{
-                arr = await postData.getTen(pageNum*10);
-                res.render('pages/home', {title: 'Home', login: login, userID: userID, posts: arr})
+                let arr = await postData.getTen(pageNum*10);
+                res.render('pages/home', {title: 'Home', login: login, userID: userID, posts: arr, last: disabledLast, next: disabledNext})
             }
         } catch(e){
             res.status(500).json({error: e});
