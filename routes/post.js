@@ -21,9 +21,7 @@ router.get('/:id', async (req, res) => {
         } catch(e){
             status = false;
         }
-        console.log("Testing Post/id.... login:"+login);
         const post = await postData.getPost(postID);
-        console.log(post)
         res.render('pages/post', {title: post.postTitle, post: post, login: login, userID: userID, favorite: status});
     } catch(e){
         res.status(500).json({error: e});   

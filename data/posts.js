@@ -44,10 +44,8 @@ module.exports = {
     },
 
     async getAllPosts(){
-        console.log("in get all");
         const postCollection = await posts();
         const post_array = await postCollection.find({}).toArray();
-        console.log("Found... "+ post_array);
 		return post_array;
     },
 
@@ -84,32 +82,29 @@ module.exports = {
         const postCollection = await posts();
         let arr = await postCollection.find().sort({_id:-1}).limit(10 + index).toArray();
         if(arr.length == 0) return null; 
+        let test = arr.splice(0,index);
         if(index !== 0) return arr.splice(0, index);
         return arr;
     },
 
     async getRandom(){
-        console.log("In getRandom");
         const post_array = await this.getAllPosts();
-        console.log("get all passed");
         const num = Math.floor(Math.random() * post_array.length);
         return post_array[num]._id;
     },
 
     async getPostNum(){
-        let post_array = this.getAllPosts();
+        let post_array = await this.getAllPosts();
         return post_array.length;
 
     },
 
     async searchPost(keyword){
-        console.log(keyword);
-        console.log(typeof keyword);
         if (!keyword || typeof(keyword) !== 'string') return Promise.reject("Must enter a valid keyword");
         let post_array = await this.getAllPosts();
         const arr = [];
         for (var i = 0; i < post_array.length; i++){
-            if (post_array[i].postTitle.includes(keyword) || post_array[i].content.includes(keyword)){
+            if ((post_array[i].postTitle).toLowerCase().includes(keyword.toLowerCase()) || (post_array[i].content).toLowerCase().includes(keyword.toLowerCase())){
                 arr.push(post_array[i]);
             }
         }

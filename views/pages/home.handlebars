@@ -11,14 +11,18 @@
     {{/if_eq}}
 
     {{#if_eq type 1}}
-        <img src="{{post.src}}">
-        <p>{{post.content}}</p>
+        <img src="{{src}}">
+        <p>{{content}}</p>
     {{/if_eq}}
 
     {{#if_eq type 2}}
-        {{{post.src}}}
-        <p>{{post.content}}</p>
+        {{{src}}}
+        <p>{{content}}</p>
     {{/if_eq}} 
 </div>  
 {{/each}}
+<button type=button id="last" {{#if last}}disabled{{/if}}>Last Page</button> 
+<button type=button id="next" {{#if next}}disabled{{/if}}>Next Page</button>
 </div>
+
+<script src="/public/js/home.js"></script>

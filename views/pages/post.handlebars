@@ -4,8 +4,7 @@
     <h3>Title: {{post.movieTitle}}</h3>
     <h3>Genre: {{post.genre}}</h3>
 
-    {{#if login}}
-    {{/if}}
+    
             
     {{#if_eq post.type 0}}
         <p>{{post.content}}</p>
@@ -29,9 +28,12 @@
             <button type="Submit">Add Favorite</button> 
         </form>
         {{/unless}}
-        {{#if favorite}}
-        <form id=fav-button method=POST action="/user/favorite/{{post._id}}">
-            <button type="Submit">Remove Favorite</button> 
-        </form>
+        
+        {{#if login}}
+            {{#if favorite}}
+                <form id=fav-button method=POST action="/user/favorite/{{post._id}}">
+                    <button type="Submit">Remove Favorite</button> 
+                </form>
+            {{/if}}
         {{/if}}
 </div>
