@@ -5,6 +5,7 @@
     <p>No Posts Yet! <a href="/create">Create one now!</a></p>
 {{/if}}
 {{#each posts}}
+<div class = "each">
     <a href="/post/{{_id}}"><h1>{{postTitle}}</h1></a>    
     <h3>Title: {{movieTitle}}</h3>
     <h3>Genre: {{genre}}</h3>
@@ -20,9 +21,9 @@
     {{#if_eq type 2}}
         {{{post.src}}}
         <p>{{post.content}}</p>
-    {{/if_eq}}   
+    {{/if_eq}} 
+</div>  
 {{/each}}
-
 <h1>User Favorites:</h1>
 {{#if noFav}}
     <p>No Favorites Yet!</p>
@@ -30,6 +31,7 @@
 
 
 {{#each favorites}}
+<div class = "each">
     <a href="/post/{{_id}}"><h1>{{postTitle}}</h1></a>    
     <h2>Author: {{author}}</h2>
     <h3>Title: {{movieTitle}}</h3>
@@ -44,6 +46,7 @@
     {{#if_eq type 2}}
         {{{post.src}}}
         <p>{{post.content}}</p>
-    {{/if_eq}}   
+    {{/if_eq}} 
+</div>  
 {{/each}}
 </div>

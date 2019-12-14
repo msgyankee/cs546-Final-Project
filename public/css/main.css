@@ -124,10 +124,19 @@ body {
     padding: 50px;
     background: #FFFFFF;
     margin: 30px ;
+}
+
+.profile_style .each {
+    float: left;
+    width: 500px;
+    padding: 50px;
+    background: #FFFFFF;
+    margin: 30px ;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
     -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
     -webkit-box-shadow:  0px 0px 15px rgba(0, 0, 0, 0.22);
 }
+
 
 /* Create a Post CSS */
 .create_style {
@@ -234,13 +243,19 @@ body {
     padding: 50px;
     background: #FFFFFF;
     margin: 30px ;
+}
+.home_style .each {
+    float: left;
+    width: 500px;
+    padding: 50px;
+    background: #FFFFFF;
+    margin: 30px ;
     box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
     -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
     -webkit-box-shadow:  0px 0px 15px rgba(0, 0, 0, 0.22);
 }
 
-.home_style input[type="text"],
-.home_style input[type="password"]
+.home_style input[type="text"]
 {
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
@@ -255,21 +270,4 @@ body {
     margin-bottom: 10px;
     font: 16px Arial, Helvetica, sans-serif;
     height: 45px;
-}
-
-.home_style button[type="Submit"]  
-{
-    -moz-box-shadow: inset 0px 1px 0px 0px #45D6D6;
-    -webkit-box-shadow: inset 0px 1px 0px 0px #45D6D6;
-    box-shadow: inset 0px 1px 0px 0px #45D6D6;
-    background-color: #2CBBBB;
-    border: 1px solid #27A0A0;
-    display: inline-block;
-    cursor: pointer;
-    color: #FFFFFF;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 14px;
-    padding: 8px 18px;
-    text-decoration: none;
-    text-transform: uppercase;
 }
