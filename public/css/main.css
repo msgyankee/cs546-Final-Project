@@ -1,6 +1,12 @@
 body {
-    font-family: "Courier New", Courier, monospace;
+    font-family: 'Open Sans Condensed', arial, sans;
+}
 
+/* Navigation Bar*/
+
+#title {
+    background-color: #630c0c;
+    color:white;
 }
 .nav {
     overflow:hidden;
@@ -11,20 +17,35 @@ body {
     color: white;
     text-align: center;
     padding: 14px 16px;
-    font-size: 17px;
+    font-size: 20px;
     background-color:#000000;
     text-decoration: none;
     border:none;
-    font-family: "Courier New", Courier, monospace;
+    font-family: 'Open Sans Condensed', arial, sans;
 }
 
 .nav a:hover{
     background-color:#4d0a18;
 }
+
+/*Search Bar*/
+.nav .search-container{
+    float:right;
+    padding-right: 8px;
+    max-width: 30%;
+}
+
+.nav input[type=text] {
+    padding: 6px;
+    margin-top: 8px;
+    font-size: 20px;
+    border: none;
+    font-family:'Open Sans Condensed', arial, sans;
+}
 /* Login CSS */
 .login_style {
     float: left;
-    font-family: "Courier New", Courier, monospace;
+    font-family: 'Open Sans Condensed', arial, sans;
     width: 500px;
     padding: 50px;
     background: #FFFFFF;
@@ -48,7 +69,7 @@ body {
     border-bottom: 1px solid #ddd;
     background: transparent;
     margin-bottom: 10px;
-    font: 16px Arial, Helvetica, sans-serif;
+    font: 18px 'Open Sans Condensed', arial, sans;
     height: 45px;
 }
 
@@ -62,8 +83,8 @@ body {
     display: inline-block;
     cursor: pointer;
     color: #FFFFFF;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 14px;
+    font-family: 'Open Sans Condensed', arial, sans;
+    font-size: 16px;
     padding: 8px 18px;
     text-decoration: none;
     text-transform: uppercase;
@@ -72,7 +93,7 @@ body {
 /* Signup CSS */
 .signup_style {
     float: left;
-    font-family: "Courier New", Courier, monospace;
+    font-family: 'Open Sans Condensed', arial, sans;
     width: 500px;
     padding: 50px;
     background: #FFFFFF;
@@ -96,7 +117,7 @@ body {
     border-bottom: 1px solid #ddd;
     background: transparent;
     margin-bottom: 10px;
-    font: 16px Arial, Helvetica, sans-serif;
+    font: 18px 'Open Sans Condensed', arial, sans;
     height: 45px;
 }
 
@@ -110,8 +131,8 @@ body {
     display: inline-block;
     cursor: pointer;
     color: #FFFFFF;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 14px;
+    font-family: 'Open Sans Condensed', arial, sans;
+    font-size: 16px;
     padding: 8px 18px;
     text-decoration: none;
     text-transform: uppercase;
@@ -141,7 +162,7 @@ body {
 /* Create a Post CSS */
 .create_style {
     float: left;
-    font-family: "Courier New", Courier, monospace;
+    font-family: 'Open Sans Condensed', arial, sans;
     width: 500px;
     padding: 50px;
     background: #FFFFFF;
@@ -165,7 +186,7 @@ body {
     border-bottom: 1px solid #ddd;
     background: transparent;
     margin-bottom: 10px;
-    font-family: "Courier New", Courier, monospace;
+    font-family: 'Open Sans Condensed', arial, sans;
     height: 45px;
 }
 
@@ -179,8 +200,8 @@ body {
     display: inline-block;
     cursor: pointer;
     color: #FFFFFF;
-    font-family: "Courier New", Courier, monospace;
-    font-size: 14px;
+    font-family: 'Open Sans Condensed', arial, sans;
+    font-size: 16px;
     padding: 8px 18px;
     text-decoration: none;
     text-transform: uppercase;
@@ -190,8 +211,8 @@ body {
 
 .post_style {
     float: left;
-    font-family: "Courier New", Courier, monospace;
-    width: 500px;
+    font-family: 'Open Sans Condensed', arial, sans;
+    width: 550px;
     padding: 50px;
     background: #FFFFFF;
     margin: 30px ;
@@ -214,10 +235,22 @@ body {
     border-bottom: 1px solid #ddd;
     background: transparent;
     margin-bottom: 10px;
-    font: 16px Arial, Helvetica, sans-serif;
+    font: 18px 'Open Sans Condensed', arial, sans;
     height: 45px;
 }
 
+.image img{
+    width: 75%;
+    height: 75%;
+    padding: 50px;
+    background: #FFFFFF;
+}
+
+.video {
+    width: 75%;
+    height: 75%;
+    background: #FFFFFF;
+}
 .post_style button[type="Submit"]  
 {
     -moz-box-shadow: inset 0px 1px 0px 0px #45D6D6;
@@ -229,7 +262,7 @@ body {
     cursor: pointer;
     color: #FFFFFF;
     font-family: "Courier New", Courier, monospace;
-    font-size: 14px;
+    font-size: 16px;
     padding: 8px 18px;
     text-decoration: none;
     text-transform: uppercase;
@@ -238,7 +271,7 @@ body {
 /* Home CSS */
 .home_style {
     float: left;
-    font-family: "Courier New", Courier, monospace;
+    font-family: 'Open Sans Condensed', arial, sans;
     width: 500px;
     padding: 50px;
     background: #FFFFFF;
@@ -268,6 +301,43 @@ body {
     border-bottom: 1px solid #ddd;
     background: transparent;
     margin-bottom: 10px;
-    font: 16px Arial, Helvetica, sans-serif;
+    font: 18px 'Open Sans Condensed', arial, sans;
+    height: 45px;
+}
+
+/* Search CSS */
+.search_style {
+    float: left;
+    font-family: 'Open Sans Condensed', arial, sans;
+    width: 500px;
+    padding: 50px;
+    background: #FFFFFF;
+    margin: 30px ;
+}
+.search_style .each {
+    float: left;
+    width: 500px;
+    padding: 50px;
+    background: #FFFFFF;
+    margin: 30px ;
+    box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+    -moz-box-shadow: 0px 0px 15px rgba(0, 0, 0, 0.22);
+    -webkit-box-shadow:  0px 0px 15px rgba(0, 0, 0, 0.22);
+}
+
+.search_style input[type="text"]
+{
+    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    outline: none;
+    display: block;
+    width: 100%;
+    padding: 7px;
+    border: none;
+    border-bottom: 1px solid #ddd;
+    background: transparent;
+    margin-bottom: 10px;
+    font: 16px 'Open Sans Condensed', arial, sans;
     height: 45px;
 }

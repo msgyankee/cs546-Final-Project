@@ -8,6 +8,7 @@
 </head>
 <body>
     <div class = "nav">
+        <a href="" id="title">LOCALHOST:3000</a>
         <a href="/">Home</a>
         <a href="/create">Create a Post</a>
         <a href="/random">Random Post</a>
@@ -19,7 +20,9 @@
             <a href = "/signup">Sign Up</a>
             <a href = "/login">Login</a>
         {{/unless}}
-        <input type="text" name="search" id="search">
+        <div class="search-container">
+            <input type="text" placeholder="Search..." name="search" id="search">
+        </div>
     </div>
     {{{body}}}
 
