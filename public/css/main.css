@@ -233,6 +233,13 @@ body {
     height: 45px;
 }
 
+.post_style .image{
+    width: 500px;
+    padding: 50px;
+    background: #FFFFFF;
+    margin: 30px ;
+}
+
 .post_style button[type="Submit"]  
 {
     -moz-box-shadow: inset 0px 1px 0px 0px #45D6D6;
