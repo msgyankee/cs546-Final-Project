@@ -44,7 +44,7 @@ body {
 }
 
 /*Last and Next Button*/
-.next button[type="button"], .last button[type="button"]{
+.next button[type="Submit"], .last button[type="Submit"]{
     -moz-box-shadow: inset 0px 1px 0px 0px #630c0c;
     -webkit-box-shadow: inset 0px 1px 0px 0px #630c0c;
     box-shadow: inset 0px 1px 0px 0px #630c0c;
@@ -60,7 +60,7 @@ body {
     text-transform: uppercase;
 }
 
-.next button:disabled, .last button:disabled {
+.next button[type="Submit"]:disabled, .last button[type="Submit"]:disabled {
     -moz-box-shadow: inset 0px 1px 0px 0px #45D6D6;
     -webkit-box-shadow: inset 0px 1px 0px 0px #45D6D6;
     box-shadow: inset 0px 1px 0px 0px #45D6D6;
