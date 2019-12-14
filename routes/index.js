@@ -2,87 +2,77 @@ const loginRoutes = require("./login");
 const createRoutes = require("./create");
 const signupRoutes = require("./signup");
 const userRoutes = require("./user");
+const randomRoute = require("./random");
+const postRoute = require("./post");
+const searchRoute = require("./search");
 
 const data = require("../data");
 const postData = data.posts;
 const userData = data.users;
 
-const contructorMethod = app => {
+const constructorMethod = app => {
 
     //Pages w/ multiple routes go into separate files.
     app.use("/login", loginRoutes);    
     app.use("/create", createRoutes);
     app.use("/signup", signupRoutes);
     app.use("/user", userRoutes);
+    app.use("/random", randomRoute);
+    app.use("/post", postRoute);
+    app.use("/search", searchRoute);
     
-    //Homepage routes
+    //Homepage route
     app.get("/", async (req, res) => {
-        try{
-            arr = await postData.getTen(0);
-            res.render('pages/home', {title: Home, posts: arr});
-        }catch(e){
-            res.status(500).json({error: e});
-        }  
+        res.redirect("/0"); 
     });
 
+    //Logout automatically redirects back to home.
+    app.get("/logout", async (req, res) => {
+        await userData.setSession((await userData.userBySession(req.session.loginStatus))._id, "");
+        const anHourAgo = new Date();
+        anHourAgo.setHours(anHourAgo.getHours() - 1);
+        res.cookie("AuthCookie", "", { expires: anHourAgo });
+        res.clearCookie('AuthCookie');
+        res.redirect('/');
+    });
+
+    //Getting a console error about this. trying to shut it up
+    app.get("/favicon.ico", (req,res) => {return 0});
+
+    //Dynamic route can overwrite others, so its at the bottom 
     app.get('/:id', async (req, res) => {
-        if(!req.params.id) res.redirect('/');
+        if(!req.params.id|| (!parseInt(req.params.id) && parseInt(req.params.id) !== 0)) res.redirect('/0');
         else try{
-            const pageNum = parseInt(req.params.id);
-            const postCount = await postData.getPostNum();
-            if(pageNum < 0) res.redirect('/');
-            else if(pageNum >= Math.floor(postCount/10)) res.redirect(`/${Math.floor(postCount/10)}`);
-            else{
-                arr = await postData.getTen(pageNum*10);
-                res.render('pages/home', {title: 'Home', posts: arr})
-            }
-        } catch(e){
-            res.status(500).json({error: e});
-        }
-    });
-
-    //These routes are singletons, so they were added here in index
-    app.get('/post/:id', async (req, res) => {
-        if(!req.params.id) res.redirect('/');
-        else try{
-            const postID =parseInt(req.params.id)
-            const login = true;
-            const status = false;
+            
+            let login = true;
+            let userID = "";
             if(!req.session.loginStatus) login = false;
             else try{
-                const user = userData.userBySession(req.session.loginStatus);
+                const user = await userData.userBySession(req.session.loginStatus);
                 if(user !== null){
-                    status = userData.isFavorite(user._id, postID);
+                    userID = user._id;
                 }
             } catch(e){
-                status = false;
+                login = false
+                userID = false;
             }
+            
+            const pageNum = parseInt(req.params.id);
+            const postCount = parseInt(await postData.getPostNum());
+            
+            let disabledLast = true;
+            let disabledNext = true;
+            if(pageNum > 0) disabledLast = false;
+            if(pageNum < Math.floor(postCount/10)) disabledNext = false;
 
-            const post = postData.getPost(postID);
-
-
-            res.render('pages/post', {title: post.postTitle, post: post, login: login, favorite: status});
-        } catch(e){
-            res.status(500).json({error: e});   
-        }
-    });
-
-    app.post('/search/:query', (req,res) => {
-        if(!req.body.query) res.redirect('/');
-        try{
-            const arr = postData.searchPost(req.body.query);
-            res.render("pages/search", {title: "Search Results", posts: arr});
+            if(pageNum < 0) res.redirect('/0'); 
+            else if(pageNum > Math.floor(postCount/10)) res.redirect(`/${Math.floor(postCount/10)}`);
+            else{
+                let arr = await postData.getTen(pageNum*10);
+                res.render('pages/home', {title: 'Home', login: login, userID: userID, posts: arr, last: disabledLast, next: disabledNext})
+            }
         } catch(e){
             res.status(500).json({error: e});
-        }
-    });
-
-    app.get('/random', (req,res) => {
-        try{
-            const post = postData.getRandom();
-            res.redirect(`/post/${post}`);
-        } catch(e){
-            res.status(500).json({error: e}); 
         }
     });
 
@@ -90,12 +80,21 @@ const contructorMethod = app => {
     app.get("*", (req,res) => {
         res.sendStatus(404); 
     });
-    app.get('/logout', async function (request, response){
-        const anHourAgo = new Date();
-        anHourAgo.setHours(anHourAgo.getHours() - 1);
-        response.cookie("AuthCookie", "", { expires: anHourAgo });
-        response.clearCookie('AuthCookie');
-        res.redirect('/');
-    });
 }
 module.exports = constructorMethod;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

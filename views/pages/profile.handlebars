@@ -1,38 +1,52 @@
-<h1>User Posts:</h1>
+<div class = "profile_style">
+<h1>My Posts:</h1>
+
+{{#if noPost}}
+    <p>No Posts Yet! <a href="/create">Create one now!</a></p>
+{{/if}}
 {{#each posts}}
-    <h1>{{postTitle}}</h1>
-    <h2>{{author}}</h2>
-    <h3>{{movieTitle}}</h3>
-    <h4>{{genre}}</h4>
-    {{#if type=0}}
+<div class = "each">
+    <a href="/post/{{_id}}"><h1>{{postTitle}}</h1></a>    
+    <h3>Title: {{movieTitle}}</h3>
+    <h3>Genre: {{genre}}</h3>
+    {{#if_eq type 0}}
         <p>{{content}}</p>
-    {{/if}}
+    {{/if_eq}}
 
-    {{#if type=1}}
-    <img src="{{content}}">
-    {{/if}}
+    {{#if_eq type 1}}
+        <img src="{{src}}">
+        <p>{{content}}</p>    
+    {{/if_eq}}
 
-    {{#if type=2}}
-        {{content}}
-    {{/if}}   
-{{/each}}
-
-<h1>User Favorites:</h1>
-
-{{#each Favorites}}
-    <h1>{{postTitle}}</h1>
-    <h2>{{author}}</h2>
-    <h3>{{movieTitle}}</h3>
-    <h4>{{genre}}</h4>
-    {{#if type=0}}
+    {{#if_eq type 2}}
+        {{{src}}}
         <p>{{content}}</p>
-    {{/if}}
-
-    {{#if type=1}}
-    <img src="{{content}}">
-    {{/if}}
-
-    {{#if type=2}}
-        {{content}}
-    {{/if}}   
+    {{/if_eq}} 
+</div>  
 {{/each}}
+<h1>My Favorites:</h1>
+{{#if noFav}}
+    <p>No Favorites Yet!</p>
+{{/if}}
+
+
+{{#each favorites}}
+<div class = "each">
+    <a href="/post/{{_id}}"><h1>{{postTitle}}</h1></a>    
+    <h2>Author: {{author}}</h2>
+    <h3>Title: {{movieTitle}}</h3>
+    <h3>Genre: {{genre}}</h3>
+    {{#if_eq type 0}}
+        <p>{{content}}</p>
+    {{/if_eq}}
+
+    {{#if_eq type 1}}
+        <img src="{{post.src}}">
+        <p>{{post.content}}</p>    {{/if_eq}}
+    {{#if_eq type 2}}
+        {{{post.src}}}
+        <p>{{post.content}}</p>
+    {{/if_eq}} 
+</div>  
+{{/each}}
+</div>

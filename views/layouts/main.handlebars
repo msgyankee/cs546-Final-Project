@@ -2,16 +2,30 @@
 <html lang = "en">
 <head>
     <meta charset="utf-8">
-    <title>{{Title}}</title>
-    <link rel="stylesheet" href="../../public/css/main.css">
+    <title>{{title}}</title>
+    <link rel="stylesheet" type="text/css" href="/public/css/main.css">
+    <link href='http://fonts.googleapis.com/css?family=Open+Sans+Condensed:300' rel='stylesheet' type='text/css'>
 </head>
 <body>
     <div class = "nav">
-        <a href="../pages/home.handlebars">Home</a>
-        <a href="../pages/create.handlebars">Create a Post</a>
-        <a href="../pages/search.handlebars">Search</a>
-        <a href="../pages/random.handlebars">Random Post</a>
+        <a href="" id="title">LOCALHOST:3000</a>
+        <a href="/">Home</a>
+        <a href="/create">Create a Post</a>
+        <a href="/random">Random Post</a>
+        {{#if login}}
+            <a href="/user/{{userID}}">Profile</a>
+            <a href="/logout">Log Out</a>
+        {{/if}}
+        {{#unless login}}
+            <a href = "/signup">Sign Up</a>
+            <a href = "/login">Login</a>
+        {{/unless}}
+        <div class="search-container">
+            <input type="text" placeholder="Search..." name="search" id="search">
+        </div>
     </div>
     {{{body}}}
+
+    <script src="/public/js/search.js"></script>
 </body>
 </html>

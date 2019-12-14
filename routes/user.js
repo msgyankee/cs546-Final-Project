@@ -5,37 +5,56 @@ const userData = require("../data/users");
 
 router.get("/:id", async(req, res) => {
     try{
-        await userData.get(req.params.id);
-        const data = userData.userBySession(req.session.loginStatus);
-        if (data == null) res.redirect("/");
-        else {
-            arr = userData.getUserPosts(data._id);
-            fav = userData.getUserFavorites(data._id);
-            res.render('pages/profile', {title: 'Profile', posts: arr, favorites: fav});
+        if(!req.params.id) res.redirect("/");
+        else{ 
+            let arr = await userData.getUserPosts(req.params.id);
+            let fav = await userData.getUserFavorites(req.params.id);
+            
+            let login = true;
+            let userID = "";
+            if(!req.session.loginStatus) login = false;
+            else try{
+                const user = await userData.userBySession(req.session.loginStatus);
+                if(user !== null){
+                    userID = user._id;
+                }
+            } catch(e){
+                login = false
+                userID = false;
+            }
+
+            if(arr.length == 0 && fav.length == 0) res.render('pages/profile', {title: 'Profile', login: login, userID: userID, noPost: true, noFav: true});
+            else if(arr.length == 0) res.render('pages/profile', {title: 'Profile', login: login, userID: userID, favorites: fav, noPost: true});
+            else if(fav.length == 0) res.render('pages/profile', {title: 'Profile', login: login, userID: userID, posts: arr, noFav: true});
+            else { res.render('pages/profile', {title: 'Profile', posts: arr, login: login, userID: userID, favorites: fav}); }
         }
 
     } catch(e){
-        res.status(500).json({error:e});
+        res.redirect("/0");
     }
 });
 
 router.post("/favorite/:id", async(req, res) => {
     try{
-        await userData.get(req.params.id);
-        const postID = await postData.create(req.session.loginStatus, req.body.type, req.body.postTitle, req.body.movieTitle, req.body.genre, req.body.content);
-        const user = userData.userBySession(req.session.loginStatus);
-        userID = user._id;
-        if (user == null) res.redirect("/");
-        else {
-            if (user.userdata.isFavorite(userID, postID)) {
-                user.userdata.remFavorite(userID, postID);
-            }
+        if(!req.params.id) res.redirect("/");
+        else{
+            const postID = req.params.id;
+            const user = await userData.userBySession(req.session.loginStatus);
+            console.log("postID: "+postID);
+            console.log("User: "+user);
+            if (user == null) res.redirect("/");
             else {
-                user.userdata.addFavorite(userID, postID);
+                userID = user._id;
+                console.log("UserID: "+userID);
+                if (await userData.isFavorite(userID, postID)) {
+                    await userData.remFavorite(userID, postID);
+                }
+                else {
+                    await userData.addFavorite(userID, postID);
+                }
+                res.redirect(`/post/${postID}`);
             }
-            res.redirect("/post/");
         }
-        
     }
     catch(e){
         res.status(500).json({error:e});

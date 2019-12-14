@@ -1,15 +1,40 @@
+<div class = "post_style">
     <h1>{{post.postTitle}}</h1>
-    <h2>{{post.author}}</h2>
-    <h3>{{post.movieTitle}}</h3>
-    <h4>{{post.genre}}</h4>
-    {{#if post.type=0}}
+    <h2>Author: {{post.author}}</h2>
+    <h3>Title: {{post.movieTitle}}</h3>
+    <h3>Genre: {{post.genre}}</h3>
+
+    
+            
+    {{#if_eq post.type 0}}
         <p>{{post.content}}</p>
-    {{/if}}
+    {{/if_eq}}
 
-    {{#if post.type=1}}
-    <img src="{{post.content}}">
-    {{/if}}
+    {{#if_eq post.type 1}}
+    <div class = "image">
+        <img src="{{post.src}}">
+        <p>{{post.content}}</p>
+    </div>
+    {{/if_eq}}
 
-    {{#if post.type=2}}
-        {{post.content}}
-    {{/if}} 
+    {{#if_eq post.type 2}}
+        <div class = "video">
+            {{{post.src}}}
+        </div>
+        <p>{{post.content}}</p>
+    {{/if_eq}}
+    
+        {{#if login}} 
+            {{#unless favorite}}
+                <form id=fav-button method=POST action="/user/favorite/{{post._id}}">
+                    <button type="Submit">Add Favorite</button> 
+                </form>
+            {{/unless}}
+        
+            {{#if favorite}}
+                <form id=fav-button method=POST action="/user/favorite/{{post._id}}">
+                    <button type="Submit">Remove Favorite</button> 
+                </form>
+            {{/if}}
+        {{/if}}
+</div>
