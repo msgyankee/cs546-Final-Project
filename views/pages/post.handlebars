@@ -1,7 +1,8 @@
+<div class = "post_style">
     <h1>{{post.postTitle}}</h1>
-    <h2>{{post.author}}</h2>
-    <h3>{{post.movieTitle}}</h3>
-    <h4>{{post.genre}}</h4>
+    <h2>Author: {{post.author}}</h2>
+    <h3>Title: {{post.movieTitle}}</h3>
+    <h3>Genre: {{post.genre}}</h3>
 
     {{#if login}}
         {{#unless favorite}}
@@ -29,3 +30,4 @@
         {{{post.src}}}
         <p>{{post.content}}</p>
     {{/if_eq}} 
+</div>
