@@ -5,16 +5,6 @@
     <h3>Genre: {{post.genre}}</h3>
 
     {{#if login}}
-        {{#unless favorite}}
-        <form id=fav-button method=POST action="/user/favorite/{{post._id}}">
-            <button type="Submit">Add Favorite</button> 
-        </form>
-        {{/unless}}
-        {{#if favorite}}
-        <form id=fav-button method=POST action="/user/favorite/{{post._id}}">
-            <button type="Submit">Remove Favorite</button> 
-        </form>
-        {{/if}}
     {{/if}}
             
     {{#if_eq post.type 0}}
@@ -30,4 +20,14 @@
         {{{post.src}}}
         <p>{{post.content}}</p>
     {{/if_eq}} 
+        {{#unless favorite}}
+        <form id=fav-button method=POST action="/user/favorite/{{post._id}}">
+            <button type="Submit">Add Favorite</button> 
+        </form>
+        {{/unless}}
+        {{#if favorite}}
+        <form id=fav-button method=POST action="/user/favorite/{{post._id}}">
+            <button type="Submit">Remove Favorite</button> 
+        </form>
+        {{/if}}
 </div>
