@@ -1,9 +1,11 @@
-
+<div class = "search_style">
+    <h1>Search Results...</h1>
 {{#if noneFound}}
     <p>No posts matching your search!</p>
 {{/if}}
 
 {{#each posts}}
+<div class = "each">
     <a href="/post/{{_id}}"><h1>{{postTitle}}</h1></a>    
     <h3>{{movieTitle}}</h3>
     <h4>{{genre}}</h4>
@@ -18,4 +20,6 @@
     {{#if_eq type 2}}
         {{content}}
     {{/if_eq}}   
+</div>
 {{/each}}
+</div>
