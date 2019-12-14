@@ -1,8 +1,11 @@
+<div class = "home_style">
+    <h1>Posts of the Day!</h1>
 {{#each posts}}
+<div class = "each">
 <a href="/post/{{_id}}"><h1>{{postTitle}}</h1></a>    
-    <h2>{{author}}</h2>
-    <h3>{{movieTitle}}</h3>
-    <h4>{{genre}}</h4>
+    <h2>Author: {{author}}</h2>
+    <h3>Title: {{movieTitle}}</h3>
+    <h3>Genre: {{genre}}</h3>
     {{#if_eq type 0}}
         <p>{{content}}</p>
     {{/if_eq}}
@@ -15,5 +18,7 @@
     {{#if_eq type 2}}
         {{{post.src}}}
         <p>{{post.content}}</p>
-    {{/if_eq}}   
+    {{/if_eq}} 
+</div>  
 {{/each}}
+</div>
