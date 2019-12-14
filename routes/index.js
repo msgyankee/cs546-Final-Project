@@ -41,7 +41,6 @@ const constructorMethod = app => {
 
     //Dynamic route can overwrite others, so its at the bottom 
     app.get('/:id', async (req, res) => {
-        console.log(parseInt(req.params.id));
         if(!req.params.id|| (!parseInt(req.params.id) && parseInt(req.params.id) !== 0)) res.redirect('/0');
         else try{
             
