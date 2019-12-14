@@ -103,8 +103,10 @@ module.exports = {
     },
 
     async searchPost(keyword){
+        console.log(keyword);
+        console.log(typeof keyword);
         if (!keyword || typeof(keyword) !== 'string') return Promise.reject("Must enter a valid keyword");
-        let post_array = this.getAllPosts();
+        let post_array = await this.getAllPosts();
         const arr = [];
         for (var i = 0; i < post_array.length; i++){
             if (post_array[i].postTitle.includes(keyword) || post_array[i].content.includes(keyword)){

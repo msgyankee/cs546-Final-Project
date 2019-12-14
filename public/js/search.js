@@ -6,7 +6,8 @@
             event.preventDefault();   
             let string = "localhost:3000/search/" + search.value;
             console.log(string);
-            window.location = "localhost:3000/search/" + search.value;
+            window.location.href = "/search/" + search.value;
+            return false;
         }
   
     });
