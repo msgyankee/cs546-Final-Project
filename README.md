@@ -1,9 +1,9 @@
 # cs546-Final-Project
 
-Setup:
-   Bring terminal to root project folder. Run "npm install" to get requisite packages.
-   Run "node ./tasks/seed.js" to seed the database with example posts
-   Run "npm start" to start the web server, and connect in a browser by going to localhost:3000
+Setup:\n
+   \tBring terminal to root project folder. Run "npm install" to get requisite packages.\n
+   \tRun "node ./tasks/seed.js" to seed the database with example posts\n
+   \tRun "npm start" to start the web server, and connect in a browser by going to localhost:3000\n
    
 Usage:
   Homepage("/") - This page will display the last 10 posts submitted to the site. Use buttons at bottom of page to cycle to older posts.
