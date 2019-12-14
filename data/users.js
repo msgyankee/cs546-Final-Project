@@ -102,16 +102,13 @@ module.exports = {
     },
 
     async addFavorite(userID, postID){
-        console.log("Arrived in AddFav");
         if(!userID) return Promise.reject('Must provide a user ID to add favorite');
         if(!postID) return Promise.reject('Must provide post ID to add favorite');
-        console.log("Passed arg check");
         const id = new ObjectID(userID);
         const userCollection = await users();
 
         const user = await userCollection.findOne({_id: id});
         if(user === null) return Promise.reject('User not found');
-        console.log("User found: "+user);
         let arr = user.favorites;
         arr.push(postID);
             
