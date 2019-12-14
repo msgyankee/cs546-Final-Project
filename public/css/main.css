@@ -206,7 +206,7 @@ body {
 .post_style {
     float: left;
     font-family: 'Open Sans Condensed', arial, sans;
-    width: 500px;
+    width: 550px;
     padding: 50px;
     background: #FFFFFF;
     margin: 30px ;
@@ -229,17 +229,22 @@ body {
     border-bottom: 1px solid #ddd;
     background: transparent;
     margin-bottom: 10px;
-    font: 18px Arial, Helvetica, sans-serif;
+    font: 18px 'Open Sans Condensed', arial, sans;
     height: 45px;
 }
 
-.post_style .image{
-    width: 500px;
+.image img{
+    width: 75%;
+    height: 75%;
     padding: 50px;
     background: #FFFFFF;
-    margin: 30px ;
 }
 
+.video {
+    width: 75%;
+    height: 75%;
+    background: #FFFFFF;
+}
 .post_style button[type="Submit"]  
 {
     -moz-box-shadow: inset 0px 1px 0px 0px #45D6D6;

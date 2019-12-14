@@ -19,7 +19,9 @@
     {{/if_eq}}
 
     {{#if_eq post.type 2}}
-        {{{post.src}}}
+        <div class = "video">
+            {{{post.src}}}
+        </div>
         <p>{{post.content}}</p>
     {{/if_eq}} 
         {{#unless favorite}}
