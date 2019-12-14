@@ -29,8 +29,8 @@ router.post('/', async (req,res) => {
         await userData.setSession(userID, uuid);
         res.redirect(`/user/${userID}`);
     } catch(e){
-        //res.render("pages/signup", {title: "Signup", badLogin: true});
-        res.status(500).json({error: e});
+        res.render("pages/signup", {title: "Signup", badLogin: true});
+        //res.status(500).json({error: e});
     }
 });
 

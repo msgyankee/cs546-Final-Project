@@ -19,8 +19,10 @@ router.get('/:id', async (req, res) => {
                 userID = user._id;
             }
         } catch(e){
+            login = false;
             status = false;
         }
+        console.log(login);
         const post = await postData.getPost(postID);
         res.render('pages/post', {title: post.postTitle, post: post, login: login, userID: userID, favorite: status});
     } catch(e){
