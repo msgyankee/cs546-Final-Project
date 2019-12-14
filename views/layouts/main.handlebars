@@ -13,7 +13,8 @@
         <a href="/search">Search</a>
         <a href="/random">Random Post</a>
         {{#if login}}
-            <a href="/profile">Profile</a>
+            <a href="/user/{{userID}}">Profile</a>
+            <a href="/logout">Log Out</a>
         {{/if}}
         {{#unless login}}
             <a href = "/signup">Sign Up</a>
